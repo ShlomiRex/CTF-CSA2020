@@ -2,15 +2,25 @@ import string
 import random
 import time
 
+
+server = "http://18.156.68.123"
+
+file = open("flag.txt", "w")
+
+
 def create_configuration():
-    number_of_rotors = random.randrange(3, 6)
-    rotates_amounts = [3, 5, 7, 11, 17, 19, 23]
+    #number_of_rotors = random.randrange(3, 6)
+    number_of_rotors = 1
+    #rotates_amounts = [3, 5, 7, 11, 17, 19, 23]
+    rotates_amounts = [0]
     
     result = []
     for _ in range(number_of_rotors):
-        rotor = "".join(random.sample(string.ascii_uppercase, 26))
+        #rotor = "".join(random.sample(string.ascii_uppercase, 26))
+        rotor = "".join(random.sample(string.ascii_uppercase, 2))
         rotates_amount = random.choice(rotates_amounts)
         result.append([rotor, rotates_amount])
+    print(result)
     return result
 
 
@@ -102,6 +112,8 @@ def process_message(server_machine, message):
 
 
 def send(message):
+    file.writelines([message])
+    file.flush()
     pass #couldn't extract this part of code from the machine
 
 
@@ -111,9 +123,17 @@ def receive():
 
 
 def doEngima():
+    file.truncate(0)
+
     starting_session_seconds = time.time()
     send("Insecure channel. Encrypting with today's configuration..")
     machine = StrongerEnigma()
+
+    x = machine.encrypt("A")
+    y = machine.decrypt(x)
+    print(x)
+    print(y)
+    return
 
     while True:
         send_interface(machine)

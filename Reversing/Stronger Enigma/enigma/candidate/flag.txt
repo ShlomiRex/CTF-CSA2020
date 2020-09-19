@@ -1,0 +1,1 @@
+Insecure channel. Encrypting with today's configuration..
