@@ -1,5 +1,6 @@
 import string
 import random
+import time
 
 def create_configuration():
     number_of_rotors = random.randrange(3, 6)
@@ -118,3 +119,5 @@ def doEngima():
         send_interface(machine)
         client_message = receive()
         process_message(machine, client_message)
+
+doEngima()
