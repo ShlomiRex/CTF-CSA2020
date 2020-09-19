@@ -1,0 +1,42 @@
+         /   /  // --- /   /
+        /   /  // /O/ /   /
+       /   /  // --- /   /
+      /   /  //     /   /
+     |   |  || --- |   |
+     |   |  || |N| |   |
+     |   |  || --- |   |
+     |   |  || --- |   |
+     |---|  || |M| |---|
+     |   |  || --- |   |
+    /|   |  || --- |   |
+   / |   |  || |L| |   |     /
+  /_________________________/
+ |    __________________ | |
+ |   / .-.   .-.   .-.   \ |
+ |  | ( Q ) ( W ) ( E )  | |
+ |  |  "-".-."-".-."-"   | |
+ |O |    ( A ) ( S )     | O|
+ |  |  .-."-".-."-".-.   | |
+ |  | ( Z ) ( X ) ( C )  | |
+ |   \ "-"   "-"   "-"  /  |
+ |    ------------------   |
+ |___  .-. __ .-. __ .-.-._|
+  \   / 1 \  / 2 \  / 3 6 \ \ |
+  |\  \ Q /  \ W /  \ E Y /  \|
+  |--- "-"    "-"    "-"-" ---|
+         |      |      |
+        .-.    .-.    .-.
+       / ( \  / ) \  / ? \
+       \ Z /  \ X /  \ C /
+        "-"    "-"    "-"
+John Savard
+
+We caught an undercover agent in our facilities.
+He was transmitting sensitive data to our enemies using some kind of crypto machine.
+We were able to capture the machine but the agent destroyed the encryption configuration he used.
+It's national security matter and we only trust you to solve the mystery - what was his message?
+We were able to track the enemy's other machine in this address: 18.156.68.123:80.
+We COUNT on you on this, don't let us down!
+Good Luck!
+
+ShlomiRex: zip is attached to the folder
