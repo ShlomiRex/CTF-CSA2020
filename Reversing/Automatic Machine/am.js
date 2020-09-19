@@ -22,25 +22,105 @@ function func_xor(arr, start, end, num) {
     }
 }
 
+
+function isPrime(num) {
+    for ( var i = 2; i < num; i++ ) {
+        if ( num % i === 0 ) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function primes(n) {
+    var arr = [2];
+    for ( var i = 3; i < n; i+=2 ) {
+        if ( isPrime(i) ) {
+            arr.push(i);
+        }
+    }
+    //console.log(arr); // use arr result on your own
+    return arr
+}
+
+
 func_arr = [func_plus, func_minus, func_xor]
 function main_func(arr, term_input) {
-    i = 0;
-    while(i < arr.length) {
-        //Starting segment of 7 bytes - jump i+=7 each segment
 
+
+    term_input = primes(40)
+
+    term_input[0] = 67
+    term_input[1] = 83 
+    term_input[2] = 13 * 5
+    term_input[3] = 3 * 41
+    term_input[4] = 17 * 7
+    term_input[5] = 2 * 2 * 2 * 3 * 2
+    term_input[6] = 7 * 17
+    term_input[7] = 5 * 19
+    term_input[8] = 2 * 2 * 29
+    term_input[9] = 4 * 13 * 2
+
+    term_input[10] = 32 * 13 / 8
+    term_input[11] = 29 * 2 * 2
+    term_input[12] = 5 * 19
+    term_input[13] = 17 * 7
+    term_input[14] = 119 / 7 / 17 * 97
+    term_input[15] = 112 * 3 / 28 * 3
+    term_input[16] = 5 * 19
+    term_input[17] = 19 * 3 * 2
+    term_input[18] = 101
+    term_input[19] = 4 * 2 * 2 * 2 * 2
+    
+    term_input[20] = 3*3*3*2*2
+    term_input[21] = 3 * 2 * 2 * 3 * 3
+    term_input[22] = 11 * 11
+    term_input[23] = 5 * 19
+    term_input[24] = 23 * 5
+    term_input[25] = 70 - 7*3
+    term_input[26] = 109
+    term_input[27] = 4 * 7 * 2 * 2
+    term_input[28] = 38 * 2
+    term_input[29] = 7 * 114 / 3 / 2 / 19 / 7 * 101
+    
+    term_input[30] = 19 * 5
+    term_input[31] = 7 * 17
+    term_input[32] = 97
+    term_input[33] = 5 * 23
+    term_input[34] = 2 * 5 * 11
+    term_input[35] = 11 * 5
+    term_input[36] = 19 * 5
+    term_input[37] = 7 * 7
+    term_input[38] = 2 * 29 * 2
+    term_input[39] = 5 * 5 * 5
+    
+
+    console.log("FIRST INPUT: ", term_input)
+
+    console.log(arr)
+    i = 0;
+
+    while(i < arr.length) {
+        console.log("Input: ", term_input)
+        //Starting segment of 7 bytes - jump i+=7 each segment
         char0 = arr[i];      //If ==5 exit
         char1 = arr[i+1];    //Represents index, for term_input
         char2 = arr[i+2];    //Represents a number for division
         char3 = arr[i+3]     //If something then i += char3
         char4 = arr[i+4];    //What function to call (plus, minus, xor) - it's index 0,1,2
         char5 = arr[i+5];    //Represents a number for math stuff
-        char6 = arr[i+6]
+        char6 = arr[i+6]     //Used to calculate pointer in arr to number to do operation with in functions
 
         if(i % 7 == 0)
             console.log("Segment " + i / 7 + ": ", char0, char1, char2, char3, char4, char5, char6)
         else
             console.log("Last segment (i = " + i + ") :", char0, char1, char2, char3, char4, char5, char6)
         
+        if(char3 != 17251) {
+            console.log("OMG CHAR3 = " + char3)
+            //break
+        }
+
         //In array only 1 character is 5 and it's index is 17251
         //So in order to enter this function i=17251
         //There is no way for str to be 'authorized login' because i,j > 0 and can't change
@@ -48,26 +128,33 @@ function main_func(arr, term_input) {
             str = ""
             for(j = 0; j < char1; j++) {
                 //i+2 because first 2 bytes are char0, char1
-                str += String.fromCharCode(arr[i+2+j] ^ 0x37)
+                str += String.fromCharCode(arr[i + 2 + j] ^ 0x37)
             }
             return str
             break;
         }
 
+        //We only have control over term_input. Anything else we ignore for now.
         tchar1 = term_input[char1]
         res = tchar1 % char2
-
+        //console.log("tchar1, char2, res = ", tchar1, char2, res)
         if ((res == 0) == (4 - char0)) {
-            console.log("Inside if, changing i")
+            console.log("Inside if")
             i = char3
             continue;
         }
-
         //Why do we change terminal input?
         //if (term_input[char1] % char2 == 0) then take term_input[char1] else take floor(term_input[char1] / char2)
+        /*
         console.log("term_input before: " + term_input[char1])
+        if(res) {
+            console.log("tchar1 = " + tchar1)
+        } else {
+            console.log(" Math.floor(tchar1 / char2) = " + Math.floor(tchar1 / char2))
+        }
+        */
         term_input[char1] = res ? tchar1 : Math.floor(tchar1 / char2);
-        console.log("term_input after: " + term_input[char1])
+        //console.log("term_input after: " + term_input[char1])
 
 
 
@@ -79,9 +166,8 @@ function main_func(arr, term_input) {
         start = i + 7
         end = ( char5 + 1 ) * 7
 
-
         func_arr[char4](arr, start, end, num);
-
+        console.log("After function, arr = ", arr)
 
 
         //Next segment
@@ -113,6 +199,8 @@ $(function () {
 
         term.write('\r\n\u001b[37m$\u001b[0m ');
 
+        prompt(term)
+        /*
         term.onKey(e => {
             const printable = !e.domEvent.altKey && !e.domEvent.altGraphKey && !e.domEvent.ctrlKey && !e.domEvent.metaKey;
 
@@ -157,6 +245,7 @@ $(function () {
                 }
             }
         });
+        */
     }
 
     function prompt(term) {
