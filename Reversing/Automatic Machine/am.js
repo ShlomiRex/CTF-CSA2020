@@ -28,10 +28,10 @@ function main_func(arr, term_input) {
     while(i < arr.length) {
         //Starting segment of 7 bytes - jump i+=7 each segment
 
-        char0 = arr[i];
+        char0 = arr[i];      //If ==5 exit
         char1 = arr[i+1];    //Represents index, for term_input
         char2 = arr[i+2];    //Represents a number for division
-        char3 = arr[i+3]
+        char3 = arr[i+3]     //If something then i += char3
         char4 = arr[i+4];    //What function to call (plus, minus, xor) - it's index 0,1,2
         char5 = arr[i+5];    //Represents a number for math stuff
         char6 = arr[i+6]
@@ -41,18 +41,21 @@ function main_func(arr, term_input) {
         else
             console.log("Last segment (i = " + i + ") :", char0, char1, char2, char3, char4, char5, char6)
         
-
+        //In array only 1 character is 5 and it's index is 17251
+        //So in order to enter this function i=17251
+        //There is no way for str to be 'authorized login' because i,j > 0 and can't change
         if (char0 == 5) {
-            len = arr[i+1]
             str = ""
-            for(j = 0; j < len; j++) {
+            for(j = 0; j < char1; j++) {
+                //i+2 because first 2 bytes are char0, char1
                 str += String.fromCharCode(arr[i+2+j] ^ 0x37)
             }
             return str
             break;
         }
 
-        res = term_input[char1] % char2
+        tchar1 = term_input[char1]
+        res = tchar1 % char2
 
         if ((res == 0) == (4 - char0)) {
             console.log("Inside if, changing i")
@@ -61,10 +64,10 @@ function main_func(arr, term_input) {
         }
 
         //Why do we change terminal input?
-        //if res then ... else ...
-        console.log(res)
-        term_input[char1] = res ? term_input[char1] : Math.floor(term_input[char1]/char2);
-        
+        //if (term_input[char1] % char2 == 0) then take term_input[char1] else take floor(term_input[char1] / char2)
+        console.log("term_input before: " + term_input[char1])
+        term_input[char1] = res ? tchar1 : Math.floor(tchar1 / char2);
+        console.log("term_input after: " + term_input[char1])
 
 
 
