@@ -17,7 +17,7 @@ def create_configuration():
     result = []
     for _ in range(number_of_rotors):
         #rotor = "".join(random.sample(string.ascii_uppercase, 26))
-        rotor = "".join(random.sample(string.ascii_uppercase, 2))
+        rotor = "".join(random.sample(string.ascii_uppercase, 1))
         rotates_amount = random.choice(rotates_amounts)
         result.append([rotor, rotates_amount])
     print(result)
@@ -129,10 +129,12 @@ def doEngima():
     send("Insecure channel. Encrypting with today's configuration..")
     machine = StrongerEnigma()
 
-    x = machine.encrypt("A")
+    message = "AAA"
+    x = machine.encrypt(message)
     y = machine.decrypt(x)
-    print(x)
-    print(y)
+    print("Original text:", message)
+    print("After encryption:", x)
+    print("After decryption:", y)
     return
 
     while True:
