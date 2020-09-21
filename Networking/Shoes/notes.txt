@@ -1,0 +1,103 @@
+Let's analyze the pcap:
+
+1. Ping (10.0.2.15) -> (52.28.255.56) NO RESPONSE
+2. ARP request:  (PcsCompu_0f:ae:2f: 10.0.2.15) -> (Who has 10.0.2.2?) -> (RealtekU_12:35:02 answer: 10.0.2.2 is at 52:54:00:12:35:02)
+3. Some DNS requests for ubuntu domain
+4. HTTP request for ubuntu - it response with: 
+HTTP/1.1 304 Not Modified
+Server: nginx/1.10.3
+Date: Wed, 22 Apr 2020 11:21:26 GMT
+Last-Modified: Thu, 26 Apr 2018 23:38:40 GMT
+Connection: keep-alive
+ETag: "5ae26300-3b180"
+
+It's nothing really, ETag is common:
+The ETag HTTP response header is an identifier for a specific version of a resource. It lets caches be more efficient and save bandwidth, as a web server does not need to resend a full response if the content has not changed. Additionally, etags help prevent simultaneous updates of a resource from overwriting each other ("mid-air collisions").
+
+5. Ping request (10.0.2.15) -> (52.28.255.56) No response
+6. There is a stream that ues socks protocol and the contents are:
+
+Z...t..Z.,.`^....Z,.3....jZ......
+.Pt...Z...........uCGET / HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36
+Host: www.tutorialspoint.com
+Accept-Language: en-us
+Connection: Keep-Alive
+
+HTTP/1.1 200 OK
+Date: Wed, 22 Apr 2020 11:21:50 GMT
+Server: Apache/2.4.29 (Ubuntu)
+Last-Modified: Wed, 22 Apr 2020 10:49:56 GMT
+ETag: "9d-5a3dee491da72"
+Accept-Ranges: bytes
+Content-Length: 157
+Vary: Accept-Encoding
+Keep-Alive: timeout=5, max=100
+Connection: Keep-Alive
+Content-Type: text/html
+
+Files in server:
+
+index.html
+Arbok.jpg
+Blastoise.jpg
+Bulbasaur.jpg
+Butterfree.jpg
+Charizard.jpg
+Flag.jpg
+Metapod.jpg
+Rattata.jpg
+Squirtle.jpg
+Wartortle.jpg
+
+7. Ping again no response like before
+8. Another stream:
+
+Z...t..Z.g....v.dZg...I...Z......
+.Pt...Z...........uCGET / HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36
+Host: www.tutorialspoint.com
+Accept-Language: en-us
+Connection: Keep-Alive
+
+HTTP/1.1 200 OK
+Date: Wed, 22 Apr 2020 11:21:57 GMT
+Server: Apache/2.4.29 (Ubuntu)
+Last-Modified: Wed, 22 Apr 2020 10:49:56 GMT
+ETag: "9d-5a3dee491da72"
+Accept-Ranges: bytes
+Content-Length: 157
+Vary: Accept-Encoding
+Keep-Alive: timeout=5, max=100
+Connection: Keep-Alive
+Content-Type: text/html
+
+Files in server:
+
+index.html
+Arbok.jpg
+Blastoise.jpg
+Bulbasaur.jpg
+Butterfree.jpg
+Charizard.jpg
+Flag.jpg
+Metapod.jpg
+Rattata.jpg
+Squirtle.jpg
+Wartortle.jpg
+
+9. ICMP - not sure if it is related
+10. Thats all
+
+
+NMAP scan for 52.28.255.56
+PORT     STATE SERVICE
+80/tcp   open  http
+110/tcp  open  pop3
+143/tcp  open  imap
+993/tcp  open  imaps
+995/tcp  open  pop3s
+1080/tcp open  socks
+
+Maybe if I send request using socks protocol to ip and port 1080 with content (in hex):
+0000   5a 01 fe dd 74 9c 2e
