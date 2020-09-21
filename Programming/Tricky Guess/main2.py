@@ -158,6 +158,7 @@ class GuessMachine:
 		self.gusses = []
 		self.last_result = -1
 		self.guess_word_list = guess_word_list
+		self.possible_chars = [] # Possible chars that can be in secret word, need to confirm
 	
 	def get_next_guess(self) -> str:
 		guess = None
@@ -185,7 +186,7 @@ class GuessMachine:
 			result0 = int(self.gusses[0][1])
 			result1 = int(self.gusses[1][1])
 
-			tmp,tmp2,s3,s4 = get_char_mapping(self.gusses[0][0], self.gusses[1][0])
+			tmp,tmp2,s3,s4 = get_char_mapping(self.gusses[-2][0], self.gusses[-1][0])
 			print("Mapping:",s3," -> ", s4)
 
 			if result1 > result0:
@@ -196,17 +197,38 @@ class GuessMachine:
 				# 1. Both src char and dst char are in the secret word
 				# 2. None of them are in the secret word
 				# This is the hard part! We need to check each char indevidually! (and after that guess, if we need to remove char, then the other mapped char in previous guess, is in secret word!)
-				possible_char1 = list(s3)[0]
-				possible_char2 = list(s3)[1]
+
+				self.possible_chars.append(list(s3)[0])
+				self.possible_chars.append(list(s4)[0])
 				pass
 			else:
 				# src char is in secret word! (dest char is not in secret word)
 				self.__remove_words_containing_char(list(s3)[0])
 				pass
+		elif guess_amount == 3:
+			# If possible chars, need to check them
+			if len(self.possible_chars) != 0:
+				simillar1 = find_most_simillar_strings(self.gusses[-2][0], self.guess_word_list)
+				simillar2 = find_most_simillar_strings(self.gusses[-1][0], self.guess_word_list)
+
+				if len(simillar1) > 0:
+					print("Going to check next (char check): " + simillar1[0])
+					pass
+				elif len(simillar2) > 0:
+					print("Going to check next (char check): " + simillar2[0])
+					pass
+				else:
+					# They don't have 1 char diffirence at all. We still can't be sure about chars. Need to guess simillar string that is not already guessed
+					pass
+			else:
+				pass
 		else:
 			pass
 		self.gusses.append([guess])
-		self.guess_word_list.remove(guess) # No need to guess that word again.
+		try:
+			self.guess_word_list.remove(guess) # No need to guess that word again.
+		except:
+			pass
 		return guess
 	
 	def __remove_words_containing_char(self, char: str):
@@ -216,7 +238,7 @@ class GuessMachine:
 				words_to_remove.append(x)
 		for x in words_to_remove:
 			self.guess_word_list.remove(x)
-		print("Removed " + str(len(words_to_remove)) + " words (containing '" + char + "'), left: " + str(len(self.guess_word_list)) + "/10000")
+		print("Removed " + str(len(words_to_remove)) + " words containing '" + char + "', left: " + str(len(self.guess_word_list)) + "/10000")
 	
 	def set_last_result(self, result: int):
 		"""
@@ -225,7 +247,6 @@ class GuessMachine:
 		#self.last_result_greater = (result >= self.last_result)
 		self.last_result = result
 		self.gusses[-1].append(result)
-		print("Guesses: ", self.gusses)
 
 class Client:
 	def __init__(self, guessMachine: GuessMachine):
