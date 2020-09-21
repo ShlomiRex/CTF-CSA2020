@@ -103,7 +103,7 @@ def find_most_simillar_strings(string, list):
 
 
 
-def print_mapping(source_string, dest_string):
+def get_char_mapping(source_string, dest_string):
 	s1 = set(source_string)
 	s2 = set(dest_string)
 	s3 = s1.copy()
@@ -117,7 +117,7 @@ def print_mapping(source_string, dest_string):
 		if c in s1:
 			s4.remove(c)
 
-	print("Mapping:",s3," -> ", s4)
+	#print("Mapping:",s3," -> ", s4)
 	return [source_string, dest_string, s3, s4]
 
 
@@ -157,39 +157,72 @@ class GuessMachine:
 	def __init__(self, guess_word_list: list):
 		self.gusses = []
 		self.last_result = -1
-		self.last_result_greater = None
 		self.guess_word_list = guess_word_list
-		#self.__process_words()
 	
-	def __process_words(self):
-		"""
-		Create new word list, processed, so we don't need to do it on the fly.
-		"""
-		new_guess_word_list = []
-		i = 0
-		for word in self.guess_word_list:
-			lst = find_most_simillar_strings(word, self.guess_word_list)
-			new_guess_word_list.append([word, lst])
-			i += 1
-			if i == 1000:
-				break
-		self.guess_word_list = new_guess_word_list
-
-	def number_of_guess(self) -> int:
-		return len(self.gusses)
-
 	def get_next_guess(self) -> str:
 		guess = None
-		if self.number_of_guess() == 0:
-			guess = random.choice(self.guess_word_list)
+		guess_amount = len(self.gusses)
+		# Number of guesses.
+		if guess_amount == 0:
+			while True:
+				# We want to select a string which has 1 char diffirence
+				guess = random.choice(self.guess_word_list)
+				simillar = find_most_simillar_strings(guess, self.guess_word_list)
+				found = False
+				for x in simillar:
+					if int(x[3]) == 11:
+						found = True
+						break
+				if found:
+					break
+		elif guess_amount == 1:
+			simillar = find_most_simillar_strings(self.gusses[0][0], self.guess_word_list)
+			for x in simillar:
+				if int(x[3]) == 11:
+					guess = x[1]
+					break
+		elif guess_amount == 2:
+			result0 = int(self.gusses[0][1])
+			result1 = int(self.gusses[1][1])
+
+			tmp,tmp2,s3,s4 = get_char_mapping(self.gusses[0][0], self.gusses[1][0])
+			print("Mapping:",s3," -> ", s4)
+
+			if result1 > result0:
+				# dst char is in secret word! (src char is not in secret word)
+				self.__remove_words_containing_char(list(s3)[0])
+				pass
+			elif result1 == result0:
+				# 1. Both src char and dst char are in the secret word
+				# 2. None of them are in the secret word
+				# This is the hard part! We need to check each char indevidually! (and after that guess, if we need to remove char, then the other mapped char in previous guess, is in secret word!)
+				possible_char1 = list(s3)[0]
+				possible_char2 = list(s3)[1]
+				pass
+			else:
+				# src char is in secret word! (dest char is not in secret word)
+				self.__remove_words_containing_char(list(s3)[0])
+				pass
+		else:
+			pass
 		self.gusses.append([guess])
+		self.guess_word_list.remove(guess) # No need to guess that word again.
 		return guess
+	
+	def __remove_words_containing_char(self, char: str):
+		words_to_remove = []
+		for x in self.guess_word_list:
+			if char in x:
+				words_to_remove.append(x)
+		for x in words_to_remove:
+			self.guess_word_list.remove(x)
+		print("Removed " + str(len(words_to_remove)) + " words (containing '" + char + "'), left: " + str(len(self.guess_word_list)) + "/10000")
 	
 	def set_last_result(self, result: int):
 		"""
 		Upon receiving number of characters correct from the server, this function gets called.
 		"""
-		self.last_result_greater = (result >= self.last_result)
+		#self.last_result_greater = (result >= self.last_result)
 		self.last_result = result
 		self.gusses[-1].append(result)
 		print("Guesses: ", self.gusses)
@@ -202,25 +235,26 @@ class Client:
 	def start(self):
 		cmd = "nc tricky-guess.csa-challenge.com 2222"
 		proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stdin=subprocess.PIPE, shell=True)
-
+		
+		#Skip introduction
 		while True:
 			line = proc.stdout.readline().decode().rstrip()
 			print(line)
 			if "GO !" in line:
 				break
 
-		#Skip introduction
+		#The loop.
 		while True:
 			for i in range(16):
 				guess_word = self.guess_machine.get_next_guess()
 				if not guess_word:
-					print("Stopped, guess word is None.")
+					print("Stopped running, guess word is None.")
 					return
 
 				print("Guessing:", guess_word)
 
 				#Write guess
-				bytes_written = proc.stdin.write(guess_word.encode())
+				proc.stdin.write(guess_word.encode())
 				proc.stdin.flush() #Very important, took me a lot of time to find the problem. Must write now instead of buffer filling. 
 
 				#Read result
@@ -231,8 +265,9 @@ class Client:
 					self.guess_machine.set_last_result(result)
 				except ValueError:
 					# Read last line
+					print("ValueError exception has occured")
 					print(line)
-					break
+					return
 
 
 
@@ -240,7 +275,7 @@ words = read_words()
 guessMachine = GuessMachine(words)
 client = Client(guessMachine)
 client.start()
-
+print("Game has ended")
 
 
 
