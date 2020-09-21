@@ -117,12 +117,21 @@ I will try to target: 172.16.238.3 - couldnt
 
 Let's summurize IP:
 
-172.16.238.1 - 22(open, ssh), 80(filtered, http), 2222(filtered, EtherNetIP-1) - PROBABLY ROUTER
-172.16.238.2 - Nothing open
-172.16.238.3 - 22(open, ssh) (2d9cadf1ebc0)    <---- this is me?
-172.16.238.4 - Nothing open
 
 
+
+172.16.238.1 - 22(open, ssh), 80(filtered, http), 2222(filtered, EtherNetIP-1) - PROBABLY ROUTER (port 2222 maps to 172.16.238.3:22 which is me!)
+172.16.238.2 - Nothing open -      ubuntu_server-in_1.ubuntu_local-net
+172.16.238.3 - 22(open, ssh) (2d9cadf1ebc0)    <---- it's me i think
+172.16.238.4 - Nothing open - ubuntu_client_1.ubuntu_local-net
+
+
+
+
+
+
+
+This is me but public ip and eth0:
 3.126.154.76 - 80(open, http), 443(closed, https), 2222(open, ssh) - THIS MACHINE BACKDOOR (2d9cadf1ebc0)
 
 
@@ -144,6 +153,10 @@ I need to be router (172.16.238.1) so I need to tell 172.16.238.2 (and 172.16.23
     $ arpspoof -i eth1 -t 172.16.238.2 172.16.238.1
 I need to be user (172.16.238.2) so I need to tell 172.16.238.1 and 172.16.238.3 that I am user using arpspoof
     $ arpspoof -i eth1 -t 172.16.238.1 172.16.238.2
+
+
+tcpdump 
+
 
 
 /sys/class/net/eth1 address = 02:42:ac:10:ee:03
@@ -203,3 +216,29 @@ INTERESTING PCAPS:
 ======================================================================
 
 They are using port 1337 for something. RC4 with key as above didn't work for anything.
+
+
+
+Summary:
+1. I think 172.16.238.4 is client sending something to server 172.16.238.2
+2. I don't see any suspecious traffic AT ALL from 172.16.238.1, 172.16.238.2, 172.16.238.3, 172.16.238.4
+3. I tried maybe base64 the traffic or decrypt with RC4, but Nothing
+4. I may need to use the server flag to trigger something that then I can capture traffic
+5. I think the flag server is the router, since it has port 80 open, and only him
+
+I tried curl and tcpdump at the same time while arpspoofing all: .2 .3 .4
+
+I nmap 3.126.154.76 and got:
+Nmap scan report for ec2-3-126-154-76.eu-central-1.compute.amazonaws.com (3.126.154.76)
+Host is up (0.019s latency).
+Not shown: 993 filtered ports
+PORT     STATE  SERVICE
+80/tcp   open   http
+110/tcp  open   pop3
+143/tcp  open   imap
+443/tcp  closed https
+993/tcp  open   imaps
+995/tcp  open   pop3s
+2222/tcp open   EtherNetIP-1
+
+So pop3, imap, imaps -> email
