@@ -75,52 +75,15 @@ import os
 import subprocess
 import time
 
-words = [] #list of words that also contain abc dict
-
-def new_abc():
-	abc = [] #count a,b,c...z
-	for i in range(26):
-		abc.append(0)
-	return abc
-
-def count_chars(word):
-	word = word.lower()
-	abc = new_abc()
-	for c in word:
-		abc[ord(c)-ord('a')] = abc[ord(c)-ord('a')]+1
-	return abc
-
-def pseudo_bin_array_to_int(ar):
-	s = ""
-	for i in ar:
-		s += str(i)
-	return int(s, 2)
-
-	global guess_numbers
-	if word == "motbjlakfgxc":
-		print("Successful Guess!")
-	else:
-		print("Try again")
-		guess_numbers = guess_numbers + 1
-		if guess_numbers == 15:
-			print("Guesses more than 15")
-			exit(0)
-
-file = open("words.txt") 
-word = file.readline()
-while word:
-	word = word.strip()
-
-	bin = count_chars(word)
-	number = pseudo_bin_array_to_int(bin)
-	words.append([word, bin, number])
-	word = file.readline()
-
-words.sort(key = lambda words: words[2]) 
-
-
 
 def find_most_simillar_strings(string, list):
+	"""
+	Returns list of items with size 4.
+	Index 0: Original string.
+	Index 1: Compared string.
+	Index 2: Chars that are simillar.
+	Index 3: Count chars that are simillar.
+	"""
 	unique_chars = set(string)
 	result = []
 	max = -1
@@ -133,11 +96,11 @@ def find_most_simillar_strings(string, list):
 		# Remove dup
 		if max_num_of_simillar_chars == 12:
 			continue
-		word_string = ''.join(s)
-		result.append([string, word, word_string, max_num_of_simillar_chars])
+		simillar_chars = ''.join(sorted(s))
+		result.append([string, word, simillar_chars, max_num_of_simillar_chars])
 	return result
 		
-only_words_list = [x[0] for x in words]
+
 
 
 def print_mapping(source_string, dest_string):
@@ -159,6 +122,9 @@ def print_mapping(source_string, dest_string):
 
 
 
+
+"""
+only_words_list = [x[0] for x in words]
 first_guess_word = random.choice(only_words_list)
 
 # Second guess word = furthest from the first guess, biggest impact
@@ -171,8 +137,116 @@ for x in simillar_strings:
 		break
 
 second_guess_word = string[1]
+"""
+
+def read_words() -> list:
+	"""
+	Return list of words from the words.txt file.
+	"""
+	words = []
+	file = open("words.txt") 
+	word = file.readline()
+	while word:
+		word = word.strip()
+
+		words.append(word)
+		word = file.readline()
+	return words
+
+class GuessMachine:
+	def __init__(self, guess_word_list: list):
+		self.gusses = []
+		self.last_result = -1
+		self.last_result_greater = None
+		self.guess_word_list = guess_word_list
+		#self.__process_words()
+	
+	def __process_words(self):
+		"""
+		Create new word list, processed, so we don't need to do it on the fly.
+		"""
+		new_guess_word_list = []
+		i = 0
+		for word in self.guess_word_list:
+			lst = find_most_simillar_strings(word, self.guess_word_list)
+			new_guess_word_list.append([word, lst])
+			i += 1
+			if i == 1000:
+				break
+		self.guess_word_list = new_guess_word_list
+
+	def number_of_guess(self) -> int:
+		return len(self.gusses)
+
+	def get_next_guess(self) -> str:
+		guess = None
+		if self.number_of_guess() == 0:
+			guess = random.choice(self.guess_word_list)
+		self.gusses.append([guess])
+		return guess
+	
+	def set_last_result(self, result: int):
+		"""
+		Upon receiving number of characters correct from the server, this function gets called.
+		"""
+		self.last_result_greater = (result >= self.last_result)
+		self.last_result = result
+		self.gusses[-1].append(result)
+		print("Guesses: ", self.gusses)
+
+class Client:
+	def __init__(self, guessMachine: GuessMachine):
+		self.guess_machine = guessMachine
+		pass
+
+	def start(self):
+		cmd = "nc tricky-guess.csa-challenge.com 2222"
+		proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stdin=subprocess.PIPE, shell=True)
+
+		while True:
+			line = proc.stdout.readline().decode().rstrip()
+			print(line)
+			if "GO !" in line:
+				break
+
+		#Skip introduction
+		while True:
+			for i in range(16):
+				guess_word = self.guess_machine.get_next_guess()
+				if not guess_word:
+					print("Stopped, guess word is None.")
+					return
+
+				print("Guessing:", guess_word)
+
+				#Write guess
+				bytes_written = proc.stdin.write(guess_word.encode())
+				proc.stdin.flush() #Very important, took me a lot of time to find the problem. Must write now instead of buffer filling. 
+
+				#Read result
+				line = proc.stdout.readline().decode().strip()
+				try:
+					result = int(line)
+					print(str(result))
+					self.guess_machine.set_last_result(result)
+				except ValueError:
+					# Read last line
+					print(line)
+					break
 
 
+
+words = read_words()
+guessMachine = GuessMachine(words)
+client = Client(guessMachine)
+client.start()
+
+
+
+
+
+
+"""
 # Talk with server
 cmd = "nc tricky-guess.csa-challenge.com 2222"
 cmd2 = ['nc','tricky-guess.csa-challenge.com', '2222']
@@ -197,6 +271,9 @@ guess_word_list = only_words_list
 only_diffirence = None
 last_result = -1
 last_result_greater = None
+
+
+
 # 15 Tries
 for i in range(16):
 	guess_word = None
@@ -236,9 +313,10 @@ for i in range(16):
 		max_string = None
 
 		if int(guesses[0][1]) > int(guesses[1][1]):
-			if last_result > int(guesses[0][1])
+			if last_result > int(guesses[0][1]):
 				max_string = guesses[0][0]
-			else
+			else:
+				pass
 
 		for x in guesses:
 			if x[1] >= max:
@@ -290,3 +368,4 @@ for i in range(16):
 		break
 
 print("Guess results:\n",guesses)
+"""
