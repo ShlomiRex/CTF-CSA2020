@@ -1,12 +1,13 @@
 import random
 import os
 import subprocess
-import time
-
+import string as string_module
+import csv
 
 def find_most_simillar_strings(string, list):
 	"""
 	Returns list of items with size 4.
+
 	Index 0: Original string.
 	Index 1: Compared string.
 	Index 2: Chars that are simillar.
@@ -29,13 +30,62 @@ def find_most_simillar_strings(string, list):
 	return result
 
 def find_simillar_string_1_char_diff(string: str, words: list):
+	"""
+	Returns 3 parameters:
+	1. Simillar string.
+	2. Source char that is mapped from.
+	3. Destination char that is mapped to.
+	"""
 	simillar = find_most_simillar_strings(string, words)
-	found = None
 	for x in simillar:
 		if int(x[3]) == 11:
-			found = x[1]
-			break
-	return found
+			source = x[0]
+			simillar_string = x[1]
+			simillar_chars = x[2]
+
+			if simillar_string == string:
+				continue
+			src_char = None
+			for c in source:
+				if src_char:
+					break
+				for c2 in simillar_chars:
+					if c != c2:
+						src_char = c
+						break
+
+			dst_char = None
+			for c in simillar_string:
+				if dst_char:
+					break
+				for c2 in simillar_chars:
+					if c != c2:
+						dst_char = c
+						break
+			
+			return simillar_string, src_char, dst_char
+	return None, None, None
+
+def search_simillar_1_char_diff(string: str, src_char: str, words: list):
+	"""
+	The source string has 'char' and the result does not have 'char' but instead diffirent mapping.
+	"""
+	if src_char not in string:
+		return None, None, None
+	simillar = find_most_simillar_strings(string, words)
+	for x in simillar:
+		if int(x[3]) == 11:
+			source = x[0]
+			simillar_string = x[1]
+			simillar_chars = x[2]
+
+			if simillar_string == string:
+				continue
+			if src_char in source:
+				continue
+
+			return simillar_string, simillar_chars, src_char
+	return None, None, None
 
 def get_random_word_with_simillar_string_1_char_diff(words: list):
 	for x in words:
@@ -77,114 +127,70 @@ def read_words() -> list:
 	return words
 
 class GuessMachine:
-	def __init__(self, guess_word_list: list):
-		self.gusses = []
+	def __init__(self, guess_word_list: list, mappings: list):
+		self.guesses = []
 		self.last_result = -1
 		self.guess_word_list = guess_word_list
-		self.possible_chars = [] # Possible chars that can be in secret word, need to confirm
+		self.mappings = mappings
+		self.secret_word_chars = [] #100% chars confirmed
+		self.unwanted_chars = [] #100% chars not in secret word
+		self.possible_chars = set(string_module.ascii_lowercase) 
+
+		#self.char_trying = None
+		self.trying_map_chars = [None,None]
 	
 	def get_next_guess(self) -> str:
 		guess = None
-		guess_amount = len(self.gusses)
-		# Number of guesses.
-		if guess_amount == 0:
+		guess_amount = len(self.guesses)
+		print("Guess #" + str(guess_amount))
+
+		if guess_amount % 2 == 0:
+			self.trying_map_chars[0] = self.possible_chars.pop()
 			while True:
 				# We want to select a string which has 1 char diffirence
 				guess = random.choice(self.guess_word_list)
-				string = find_simillar_string_1_char_diff(guess, self.guess_word_list)
-				if string:
+				if self.trying_map_chars[0] not in guess:
+					continue
+				string, src_char, dst_char = find_simillar_string_1_char_diff(guess, self.guess_word_list)
+				if string and self.trying_map_chars[0] not in string:
 					break
 				# else, keep guessing a word untill found
-		elif guess_amount == 1:
-			# Find simillar string compare to previous guess (there must be one because of previous checks)
-			guess = find_simillar_string_1_char_diff(self.gusses[-1][0], self.guess_word_list)
 
-		elif guess_amount == 2:
-			result0 = int(self.gusses[0][1])
-			result1 = int(self.gusses[1][1])
-
-			# s3 - source char , s4 - dst char mapping
-			tmp,tmp2,s3,s4 = get_char_mapping(self.gusses[-2][0], self.gusses[-1][0])
-			print("Mapping:",s3," -> ", s4)
-
-			if len(s3) != 1 or len(s4) != 1:
-				# This should never happen
-				raise "Length of s3 or s4 is not 1. len(s3), len(s4) = " + str(len(s3)) + ", " + str(len(s4))
-				exit(-1)
-
-			src_char = list(s3)[0]
-			dst_char = list(s4)[0]
-
-			if result1 > result0:
-				# dst char is in secret word! (src char is not in secret word - remove it)
-				self.__remove_words_containing_char(src_char) #remove words containing source char
-				self.__remove_words_not_containing_char(dst_char) #remove words NOT containing dst char
-
-				for x in self.gusses:
-					simillar = find_simillar_string_1_char_diff(x[0], self.guess_word_list)
-					if simillar:
-						print(simillar, "is simillar to", x[0])
-						guess = simillar
-						break
-				if not guess:
-					guess = get_random_word_with_simillar_string_1_char_diff(self.guess_word_list)
-			elif result1 == result0:
-				"""
-				1. Both src char and dst char are in the secret word
-				2. None of them are in the secret word
-				This is the hard part! We need to check each char indevidually! (and after that guess, if we need to remove char, then the other mapped char in previous guess, is in secret word!)
-				"""
-				self.possible_chars.append(src_char)
-				self.possible_chars.append(dst_char)
-
-				simillar1 = find_most_simillar_strings(self.gusses[-2][0], self.guess_word_list)
-				simillar2 = find_most_simillar_strings(self.gusses[-1][0], self.guess_word_list)
-
-				print(simillar1)
-				print(simillar2)
-
-				if len(simillar1) > 0:
-					print("Going to check next (char check): " + simillar1[0])
-					guess = simillar1
-				elif len(simillar2) > 0:
-					print("Going to check next (char check): " + simillar2[0])
-					guess = simillar2
-				else:
-					# They don't have 1 char diffirence at all. We still can't be sure about chars. Need to guess simillar string that is not already guessed
-					# Select a word that contains one of the chars (but not both) AND has simillar string 1 char diff
-					while True:
-						filtered_words = list(self.guess_word_list) #copy list by value
-						char1 = self.possible_chars[0]
-						char2 = self.possible_chars[1]
-						filtered_words = list(filter(lambda x: char1 in x and char2 not in x, filtered_words))
-						print("10 words that contain '" + char1 + "' and not '" + char2 + " = " + random.sample(filtered_words, 10))
-						# Length of filtered_words > 0 because of previous checks
-						for x in filtered_words:
-							string = find_simillar_string_1_char_diff(self.gusses[-1][0], self.guess_word_list)
-							exit(-1)
-			else:
-				# src char is in secret word! (dest char is not in secret word - remove it)
-				self.__remove_words_containing_char(dst_char) #remove words containing dst char
-				self.__remove_words_not_containing_char(src_char) #remove words NOT containing src char
-
-				for x in self.gusses:
-					simillar = find_simillar_string_1_char_diff(x[0], self.guess_word_list)
-					if simillar:
-						print(simillar, "is simillar to", x[0])
-						guess = simillar
-						break
-				if not guess:
-					guess = get_random_word_with_simillar_string_1_char_diff(self.guess_word_list)
-		elif guess_amount == 3:
-			# If possible chars, need to check them
-			pass
 		else:
-			pass
-		self.gusses.append([guess])
+			for c in self.possible_chars:
+				string, src_char, dst_char = find_simillar_string_1_char_diff(self.guesses[0][0], self.guess_word_list)
+				if c == dst_char:
+					print(self.guesses[0][0], string, src_char, dst_char)
+					try:
+						self.trying_map_chars[0] = src_char
+						self.trying_map_chars[1] = dst_char
+						self.possible_chars.remove(src_char)
+						self.possible_chars.remove(dst_char)
+						guess = string
+					except:
+						pass
+					break
+			"""
+			self.char_trying = self.possible_chars.pop()
+			for x in self.guesses:
+				word = x[0]
+				if self.char_trying in word:
+					#THE PROBLEM HERE IS THAT SRC_CHAR IS NOT EQUAL TO SELF.CHAR_TRYING. WE NEED TO FIX THIS ASAP
+					simillar_string, src_char, dst_char = find_simillar_string_1_char_diff(word, self.guess_word_list)
+					if simillar_string:
+						guess = simillar_string
+						self.trying_map_chars[0] = src_char
+						self.trying_map_chars[1] = dst_char
+						print("Mapping: '" + src_char + "' -> '" + dst_char +"'")
+						break
+		"""
+		self.guesses.append([guess])
 		try:
 			self.guess_word_list.remove(guess) # No need to guess that word again.
 		except:
 			pass
+
+		print("Guesses: " + str(self.guesses))
 		return guess
 	
 	def __remove_words_containing_char(self, char: str):
@@ -209,9 +215,34 @@ class GuessMachine:
 		"""
 		Upon receiving number of characters correct from the server, this function gets called.
 		"""
-		#self.last_result_greater = (result >= self.last_result)
+		src_char = self.trying_map_chars[0]
+		dst_char = self.trying_map_chars[1]
+		if len(self.guesses) > 1:
+			print("Mapping: '{}' -> '{}'".format(src_char, dst_char))
+			if result > self.last_result:
+				print("Greater result, char '" + dst_char + "' is in secret word and char '" + src_char + "' is not in secret word")
+				self.__remove_words_not_containing_char(dst_char)
+				self.secret_word_chars.append(dst_char)
+
+				self.__remove_words_containing_char(src_char)
+				self.unwanted_chars.append(src_char)
+			elif result == self.last_result:
+				print("Result is same as last time")
+				pass
+			else:
+				print("Lower result, char '" + src_char + "' is in secret word and char '" + dst_char + "' is not in secret word")
+				self.__remove_words_not_containing_char(src_char)
+				self.secret_word_chars.append(src_char)
+
+				self.__remove_words_containing_char(dst_char)
+				self.unwanted_chars.append(dst_char)
 		self.last_result = result
-		self.gusses[-1].append(result)
+		self.guesses[-1].append(result)
+
+		print("Secret words chars: " + str(self.secret_word_chars))
+		print("Chars not in secret word: " + str(self.unwanted_chars))
+
+
 
 class Client:
 	def __init__(self, guessMachine: GuessMachine):
@@ -237,8 +268,6 @@ class Client:
 					print("Stopped running, guess word is None.")
 					return
 
-				print("Guessing:", guess_word)
-
 				#Write guess
 				proc.stdin.write(guess_word.encode())
 				proc.stdin.flush() #Very important, took me a lot of time to find the problem. Must write now instead of buffer filling. 
@@ -256,9 +285,27 @@ class Client:
 					return
 
 
-words = read_words()
+mappings = []
+for row in csv.reader(open("out.csv", "r", newline=""), delimiter=','):
+	mappings.append(row)
 
-guessMachine = GuessMachine(words)
+for x in mappings:
+	x[1] = x[1].replace(' ', '')
+	x[2] = x[2].replace(' ', '')
+	x[3] = x[3].replace(' ', '')
+
+
+
+
+
+words1 = [x[0] for x in mappings]
+words2 = [x[1] for x in mappings]
+
+words = list((set(list(words1) + list(words2))))
+
+#words = read_words()
+
+guessMachine = GuessMachine(words, mappings)
 client = Client(guessMachine)
 client.start()
 print("Game has ended")
