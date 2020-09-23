@@ -145,7 +145,7 @@ class GuessMachine:
 		guess_amount = len(self.guesses)
 		print("Guess #" + str(guess_amount+1))
 
-		if guess_amount == 15:
+		if guess_amount == 14:
 			print("\n\nFinal guess")
 			print("Words: ", len(self.guess_word_list))
 			for word in self.guess_word_list:
@@ -285,8 +285,9 @@ class Client:
 					self.guess_machine.set_last_result(result)
 				except ValueError:
 					# Read last line
-					print("ValueError exception has occured !!!")
-					print(line)
+					if len(guessMachine.guesses) != 15:
+						print("ValueError exception has occured !!!")
+						print(line)
 					return
 
 
