@@ -132,21 +132,30 @@ class GuessMachine:
 		self.last_result = -1
 		self.guess_word_list = guess_word_list
 		self.mappings = mappings
-		self.secret_word_chars = [] #100% chars confirmed
+		self.secret_word_chars = set() #100% chars confirmed
 		self.unwanted_chars = [] #100% chars not in secret word
-		self.possible_chars = set(string_module.ascii_lowercase) 
-		self.undecided_chars = [] #Not sure what chars are
+		self.possible_chars = set(string_module.ascii_lowercase) #Chars that are not here are 100% in secret word or not.
+		self.undecided_mapping = [] #Not sure what chars are
+		self.tried_mapping = [] #each 2nd guess mapping
 
 		#self.char_trying = None
 		self.current_mapping = [None,None,None,None]
 	
+	def __find_mapping_with_char(self, char):
+		for x in self.mappings:
+			if x[2] == char or x[3] == char:
+				return x
+		return None
+
 	def get_next_guess(self) -> str:
 		guess = None
 		guess_amount = len(self.guesses)
 		print("Guess #" + str(guess_amount+1))
+		if guess_amount == 15:
+			return
 
 		if guess_amount == 14:
-			print("\n\nFinal guess")
+			print("-----Final guess-----")
 			print("Words: ", len(self.guess_word_list))
 			for word in self.guess_word_list:
 				# Check word has all the chars we need
@@ -171,33 +180,138 @@ class GuessMachine:
 					guess = word
 					break
 					
-
+		def find_mapping_any_char(chars):
+			for x in chars:
+				ret = self.__find_mapping_with_char(x)
+				if ret:
+					return ret
+			return None
+		
+		def get_set_of_all_undecided_mappings():
+			ret = set()
+			for x in self.undecided_mapping:
+				ret.add(x[0])
+				ret.add(x[1])
+			return ret
+		
+		def check_mapping_already_tried(char1, char2):
+			for x in self.tried_mapping:
+				if x[0] == char1 and x[1] == char2:
+					return True
+				elif x[0] == char2 and x[1] == char1:
+					return True
+			return False
 
 		if guess_amount % 2 == 0:
-			for c in self.possible_chars:
-				mapping =  random.choice(self.mappings)
-				src_char = mapping[2]
-				dst_char = mapping[3]
+			if len(self.undecided_mapping) > 0:
+				for x in self.undecided_mapping:
+					chars = get_set_of_all_undecided_mappings()
+					res = find_mapping_any_char(chars)
+					print("chars = ", chars)
+					print("res = ", res)
+					if res:
 
-				if c == src_char or c == dst_char:
-					# Skip same mapping already tried
-					if src_char in self.undecided_chars and dst_char in self.undecided_chars:
-						continue
-					if src_char in self.unwanted_chars or dst_char in self.unwanted_chars:
-						print("src_char or dst_char in unwanted_chars: ", src_char, dst_char, self.unwanted_chars)
-						continue
-					self.current_mapping = mapping
-					print("Mapping: ", self.current_mapping)
-					break
-			guess = mapping[0]
+						# Check if already tried mapping
+						if check_mapping_already_tried(res[2], res[3]):
+							print("Already tried mapping with chars: ", res[2], "and", res[3])
+							continue
+						self.current_mapping = res
+						guess = self.current_mapping[0]
+						self.tried_mapping.append(res)
+						break
+				if not guess:
+					print("Couldn't guess")
+					exit()
+			else:
+				for c in self.possible_chars:
+					mapping =  random.choice(self.mappings)
+					src_char = mapping[2]
+					dst_char = mapping[3]
+
+					if c == src_char or c == dst_char:
+						# Skip mapping already tried
+						if src_char in self.unwanted_chars or dst_char in self.unwanted_chars:
+							print("src_char or dst_char in unwanted_chars: ", src_char, dst_char, self.unwanted_chars)
+							continue
+						if src_char in self.secret_word_chars or dst_char in self.secret_word_chars:
+							continue
+
+						already_guessed = False
+						for x in self.guesses:
+							if mapping[0] == x[0]:
+								already_guessed = True
+								break
+						if already_guessed:
+							continue
+						self.current_mapping = mapping
+						break
+				guess = mapping[0]
 
 		else:
 			guess = self.current_mapping[1]
 		self.guesses.append([guess])
 
 		print("Guesses: " + str(self.guesses))
+		print("Mapping: ", self.current_mapping)
 		return guess
 	
+	def __remove_undecided_mapping_that_contain_char(self, char: str):
+		to_remove = []
+		for x in self.undecided_mapping:
+			if x[0] == char or x[1] == char:
+				to_remove.append(x)
+		for x in to_remove:
+			self.undecided_mapping.remove(x)
+	
+	def resolve_undecided_mappings(self, resolved_char):
+		"""
+		Loop pairwise mappings that one of the chars is resolved_char
+		Lets say:
+			undecided_mappings =  [['i', 'b'], ['i', 'r']]
+		Then we get:
+			char 'g' is in secret word and char 'r' is not in secret word
+		So we say 'g' is resolved and also 'r' is resolved (100% we know)
+		That means that char 'i' is also not in secret word, because it has pairwise: ['i', 'r']
+		Because we resolved 'i' we call the function again
+		and it should return also ['i', 'b'] because it has 'i' in it
+		So in total it should returns: 'r', 'i', 'b'
+		"""
+		def check_all_pairs(char):
+			other_chars = set()
+			to_remove = []
+			for x in self.undecided_mapping:
+				if char == x[0]:
+					other_chars.add(x[1])
+					to_remove.append(x)
+				elif char == x[1]:
+					other_chars.add(x[0])
+					to_remove.append(x)
+			for x in to_remove:
+				self.undecided_mapping.remove(x)
+			return other_chars
+
+		res = set(resolved_char)
+		while True:
+			changed = False
+			for x in list(res):
+				ret = check_all_pairs(x)
+				if len(ret) > 0:
+					res = res | ret
+					changed = True
+			if changed == False:
+				break
+
+		for x in res:
+			try:
+				self.__remove_undecided_mapping_that_contain_char(x)
+			except:
+				pass
+			try:
+				self.possible_chars.remove(src_char)
+			except:
+				pass
+		return res
+
 	def set_last_result(self, result: int):
 		"""
 		Upon receiving number of characters correct from the server, this function gets called.
@@ -206,46 +320,106 @@ class GuessMachine:
 		dst_char = self.current_mapping[3]
 
 		if len(self.guesses) > 1:
-			print("Mapping: ", self.current_mapping)
-			if result > self.last_result:
-				print("Greater result, char '" + dst_char + "' is in secret word and char '" + src_char + "' is not in secret word")
-				self.secret_word_chars.append(dst_char)
-				self.unwanted_chars.append(src_char)
+			if len(self.guesses) % 2 == 0:
+				print("Mapping: ", self.current_mapping)
+				if result > self.last_result:
+					print("Greater result, char '" + dst_char + "' is in secret word and char '" + src_char + "' is not in secret word")
+					self.secret_word_chars.add(dst_char)
+					self.unwanted_chars.append(src_char)
 
-				try:
-					self.undecided_chars.remove(src_char)
-				except:
-					pass
+					chars1 = self.resolve_undecided_mappings(src_char)
+					chars2 = self.resolve_undecided_mappings(dst_char)
 
-				try:
-					self.undecided_chars.remove(dst_char)
-				except:
-					pass
-				
-			elif result == self.last_result:
-				print("Result is same as last time, char '" + src_char + "' and char '" + dst_char + "' may be both in secret word, or neither")
-				self.undecided_chars.append(src_char)
-				self.undecided_chars.append(dst_char)
-				pass
-			else:
-				print("Lower result, char '" + src_char + "' is in secret word and char '" + dst_char + "' is not in secret word")
-				self.secret_word_chars.append(src_char)
-				self.unwanted_chars.append(dst_char)
+					if len(chars1) > 1 or len(chars2) > 1:
+						print("Undecided mappings 1: ", chars1)
+						print("Undecided mappings 2: ", chars2)
 
-				try:
-					self.undecided_chars.remove(src_char)
-				except:
-					pass
+						for x in chars1:
+							print("Char '" + x + "' is not in secret word")
+							self.unwanted_chars.append(x)
+							try:
+								self.possible_chars.remove(x)
+							except:
+								pass
+						for x in chars2:
+							print("Char '" + x + "' is in secret word")
+							self.secret_word_chars.add(x)
+							try:
+								self.possible_chars.remove(x)
+							except:
+								pass
 
-				try:
-					self.undecided_chars.remove(dst_char)
-				except:
+					try:
+						self.__remove_undecided_mapping_that_contain_char(src_char)
+					except:
+						pass
+					try:
+						self.__remove_undecided_mapping_that_contain_char(dst_char)
+					except:
+						pass
+					try: 
+						self.possible_chars.remove(src_char) 
+					except: 
+						pass
+					try: 
+						self.possible_chars.remove(dst_char) 
+					except: 
+						pass
+					
+				elif result == self.last_result:
+					print("Result is same as last time, char '" + src_char + "' and char '" + dst_char + "' may be both in secret word, or neither")
+					self.undecided_mapping.append([src_char, dst_char])
 					pass
+				else:
+					print("Lower result, char '" + src_char + "' is in secret word and char '" + dst_char + "' is not in secret word")
+					self.secret_word_chars.add(src_char)
+					self.unwanted_chars.append(dst_char)
+
+					chars1 = self.resolve_undecided_mappings(src_char)
+					chars2 = self.resolve_undecided_mappings(dst_char)
+
+					if len(chars1) > 1 or len(chars2) > 1:
+						print("Undecided mappings 1: ", chars1)
+						print("Undecided mappings 2: ", chars2)
+						for x in chars1:
+							print("Char '" + x + "' is in secret word")
+							self.secret_word_chars.add(x)
+							try:
+								self.possible_chars.remove(x)
+							except:
+								pass
+						for x in chars2:
+							print("Char '" + x + "' is not in secret word")
+							self.unwanted_chars.append(x)
+							try:
+								self.possible_chars.remove(x)
+							except:
+								pass
+
+					try:
+						self.__remove_undecided_mapping_that_contain_char(src_char)
+					except:
+						pass
+					try:
+						self.__remove_undecided_mapping_that_contain_char(dst_char)
+					except:
+						pass
+					try: 
+						self.possible_chars.remove(src_char) 
+					except: 
+						pass
+					try: 
+						self.possible_chars.remove(dst_char) 
+					except: 
+						pass
 		self.last_result = result
 		self.guesses[-1].append(result)
 
-		print("Secret words chars: ", self.secret_word_chars)
-		print("Chars not in secret word: ", self.unwanted_chars)
+		print("Secret words chars: ", list(sorted(self.secret_word_chars)))
+		print("Chars not in secret word: ", list(sorted(self.unwanted_chars)))
+		print("Possible chars: ", list(sorted(self.possible_chars)))
+		print("Undecided mapping: ", self.undecided_mapping)
+		print("\n\n")
 
 
 
@@ -299,16 +473,6 @@ for x in mappings:
 	x[1] = x[1].replace(' ', '')
 	x[2] = x[2].replace(' ', '')
 	x[3] = x[3].replace(' ', '')
-
-
-
-
-"""
-words1 = [x[0] for x in mappings]
-words2 = [x[1] for x in mappings]
-
-words = list((set(list(words1) + list(words2))))
-"""
 
 words = read_words()
 

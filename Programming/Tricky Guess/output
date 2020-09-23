@@ -26,160 +26,205 @@
 
     GO !
 Guess #1
-Mapping:  ['nvxcltdgszhb', 'xhnsgbzcvdet', 'l', 'e']
-Guesses: [['nvxcltdgszhb']]
-7
+Guesses: [['gdounvpisqkc']]
+Mapping:  ['gdounvpisqkc', 'ivulqocknsgd', 'p', 'l']
+4
 Secret words chars:  []
 Chars not in secret word:  []
+Possible chars:  ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+Undecided mapping:  []
+
+
+
 Guess #2
-Guesses: [['nvxcltdgszhb', 7], ['xhnsgbzcvdet']]
-6
-Mapping:  ['nvxcltdgszhb', 'xhnsgbzcvdet', 'l', 'e']
-Lower result, char 'l' is in secret word and char 'e' is not in secret word
-Secret words chars:  ['l']
-Chars not in secret word:  ['e']
-Guess #3
-Mapping:  ['esbmzrqjckwd', 'kvzmbsqerwjc', 'd', 'v']
-Guesses: [['nvxcltdgszhb', 7], ['xhnsgbzcvdet', 6], ['esbmzrqjckwd']]
-6
-Mapping:  ['esbmzrqjckwd', 'kvzmbsqerwjc', 'd', 'v']
-Result is same as last time, char 'd' and char 'v' may be both in secret word, or neither
-Secret words chars:  ['l']
-Chars not in secret word:  ['e']
-Guess #4
-Guesses: [['nvxcltdgszhb', 7], ['xhnsgbzcvdet', 6], ['esbmzrqjckwd', 6], ['kvzmbsqerwjc']]
-7
-Mapping:  ['esbmzrqjckwd', 'kvzmbsqerwjc', 'd', 'v']
-Greater result, char 'v' is in secret word and char 'd' is not in secret word
-Secret words chars:  ['l', 'v']
-Chars not in secret word:  ['e', 'd']
-Guess #5
-Mapping:  ['abmjzurpdqwl', 'ajmbzluwrvdq', 'p', 'v']
-Guesses: [['nvxcltdgszhb', 7], ['xhnsgbzcvdet', 6], ['esbmzrqjckwd', 6], ['kvzmbsqerwjc', 7], ['abmjzurpdqwl']]
-6
-Mapping:  ['abmjzurpdqwl', 'ajmbzluwrvdq', 'p', 'v']
-Lower result, char 'p' is in secret word and char 'v' is not in secret word
-Secret words chars:  ['l', 'v', 'p']
-Chars not in secret word:  ['e', 'd', 'v']
-Guess #6
-Guesses: [['nvxcltdgszhb', 7], ['xhnsgbzcvdet', 6], ['esbmzrqjckwd', 6], ['kvzmbsqerwjc', 7], ['abmjzurpdqwl', 6], ['ajmbzluwrvdq']]
-7
-Mapping:  ['abmjzurpdqwl', 'ajmbzluwrvdq', 'p', 'v']
-Greater result, char 'v' is in secret word and char 'p' is not in secret word
-Secret words chars:  ['l', 'v', 'p', 'v']
-Chars not in secret word:  ['e', 'd', 'v', 'p']
-Guess #7
-Mapping:  ['klrbwaixpvfn', 'fiwubrlaxkvp', 'n', 'u']
-Guesses: [['nvxcltdgszhb', 7], ['xhnsgbzcvdet', 6], ['esbmzrqjckwd', 6], ['kvzmbsqerwjc', 7], ['abmjzurpdqwl', 6], ['ajmbzluwrvdq', 7], ['klrbwaixpvfn']]
-7
-Mapping:  ['klrbwaixpvfn', 'fiwubrlaxkvp', 'n', 'u']
-Result is same as last time, char 'n' and char 'u' may be both in secret word, or neither
-Secret words chars:  ['l', 'v', 'p', 'v']
-Chars not in secret word:  ['e', 'd', 'v', 'p']
-Guess #8
-Guesses: [['nvxcltdgszhb', 7], ['xhnsgbzcvdet', 6], ['esbmzrqjckwd', 6], ['kvzmbsqerwjc', 7], ['abmjzurpdqwl', 6], ['ajmbzluwrvdq', 7], ['klrbwaixpvfn', 7], ['fiwubrlaxkvp']]
-6
-Mapping:  ['klrbwaixpvfn', 'fiwubrlaxkvp', 'n', 'u']
-Lower result, char 'n' is in secret word and char 'u' is not in secret word
-Secret words chars:  ['l', 'v', 'p', 'v', 'n']
-Chars not in secret word:  ['e', 'd', 'v', 'p', 'u']
-Guess #9
-Mapping:  ['mfwcluzhknpr', 'fhgrupnmwzcl', 'k', 'g']
-Guesses: [['nvxcltdgszhb', 7], ['xhnsgbzcvdet', 6], ['esbmzrqjckwd', 6], ['kvzmbsqerwjc', 7], ['abmjzurpdqwl', 6], ['ajmbzluwrvdq', 7], ['klrbwaixpvfn', 7], ['fiwubrlaxkvp', 6], ['mfwcluzhknpr']]
-7
-Mapping:  ['mfwcluzhknpr', 'fhgrupnmwzcl', 'k', 'g']
-Greater result, char 'g' is in secret word and char 'k' is not in secret word
-Secret words chars:  ['l', 'v', 'p', 'v', 'n', 'g']
-Chars not in secret word:  ['e', 'd', 'v', 'p', 'u', 'k']
-Guess #10
-Guesses: [['nvxcltdgszhb', 7], ['xhnsgbzcvdet', 6], ['esbmzrqjckwd', 6], ['kvzmbsqerwjc', 7], ['abmjzurpdqwl', 6], ['ajmbzluwrvdq', 7], ['klrbwaixpvfn', 7], ['fiwubrlaxkvp', 6], ['mfwcluzhknpr', 7], ['fhgrupnmwzcl']]
-8
-Mapping:  ['mfwcluzhknpr', 'fhgrupnmwzcl', 'k', 'g']
-Greater result, char 'g' is in secret word and char 'k' is not in secret word
-Secret words chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g']
-Chars not in secret word:  ['e', 'd', 'v', 'p', 'u', 'k', 'k']
-Guess #11
-Mapping:  ['pugckwobqaye', 'obuclegkqayp', 'w', 'l']
-Guesses: [['nvxcltdgszhb', 7], ['xhnsgbzcvdet', 6], ['esbmzrqjckwd', 6], ['kvzmbsqerwjc', 7], ['abmjzurpdqwl', 6], ['ajmbzluwrvdq', 7], ['klrbwaixpvfn', 7], ['fiwubrlaxkvp', 6], ['mfwcluzhknpr', 7], ['fhgrupnmwzcl', 8], ['pugckwobqaye']]
-5
-Mapping:  ['pugckwobqaye', 'obuclegkqayp', 'w', 'l']
-Lower result, char 'w' is in secret word and char 'l' is not in secret word
-Secret words chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g', 'w']
-Chars not in secret word:  ['e', 'd', 'v', 'p', 'u', 'k', 'k', 'l']
-Guess #12
-Guesses: [['nvxcltdgszhb', 7], ['xhnsgbzcvdet', 6], ['esbmzrqjckwd', 6], ['kvzmbsqerwjc', 7], ['abmjzurpdqwl', 6], ['ajmbzluwrvdq', 7], ['klrbwaixpvfn', 7], ['fiwubrlaxkvp', 6], ['mfwcluzhknpr', 7], ['fhgrupnmwzcl', 8], ['pugckwobqaye', 5], ['obuclegkqayp']]
-5
-Mapping:  ['pugckwobqaye', 'obuclegkqayp', 'w', 'l']
-Result is same as last time, char 'w' and char 'l' may be both in secret word, or neither
-Secret words chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g', 'w']
-Chars not in secret word:  ['e', 'd', 'v', 'p', 'u', 'k', 'k', 'l']
-Guess #13
-src_char or dst_char in unwanted_chars:  i v ['e', 'd', 'v', 'p', 'u', 'k', 'k', 'l']
-Guesses: [['nvxcltdgszhb', 7], ['xhnsgbzcvdet', 6], ['esbmzrqjckwd', 6], ['kvzmbsqerwjc', 7], ['abmjzurpdqwl', 6], ['ajmbzluwrvdq', 7], ['klrbwaixpvfn', 7], ['fiwubrlaxkvp', 6], ['mfwcluzhknpr', 7], ['fhgrupnmwzcl', 8], ['pugckwobqaye', 5], ['obuclegkqayp', 5], ['kixrzfgmocsh']]
-6
-Mapping:  ['pugckwobqaye', 'obuclegkqayp', 'w', 'l']
-Greater result, char 'l' is in secret word and char 'w' is not in secret word
-Secret words chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g', 'w', 'l']
-Chars not in secret word:  ['e', 'd', 'v', 'p', 'u', 'k', 'k', 'l', 'w']
-Guess #14
-Guesses: [['nvxcltdgszhb', 7], ['xhnsgbzcvdet', 6], ['esbmzrqjckwd', 6], ['kvzmbsqerwjc', 7], ['abmjzurpdqwl', 6], ['ajmbzluwrvdq', 7], ['klrbwaixpvfn', 7], ['fiwubrlaxkvp', 6], ['mfwcluzhknpr', 7], ['fhgrupnmwzcl', 8], ['pugckwobqaye', 5], ['obuclegkqayp', 5], ['kixrzfgmocsh', 6], ['obuclegkqayp']]
-5
-Mapping:  ['pugckwobqaye', 'obuclegkqayp', 'w', 'l']
-Lower result, char 'w' is in secret word and char 'l' is not in secret word
-Secret words chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g', 'w', 'l', 'w']
-Chars not in secret word:  ['e', 'd', 'v', 'p', 'u', 'k', 'k', 'l', 'w', 'l']
-Guess #15
-Mapping:  ['dgukmlwebzoh', 'dklzobhufgwe', 'm', 'f']
-Guesses: [['nvxcltdgszhb', 7], ['xhnsgbzcvdet', 6], ['esbmzrqjckwd', 6], ['kvzmbsqerwjc', 7], ['abmjzurpdqwl', 6], ['ajmbzluwrvdq', 7], ['klrbwaixpvfn', 7], ['fiwubrlaxkvp', 6], ['mfwcluzhknpr', 7], ['fhgrupnmwzcl', 8], ['pugckwobqaye', 5], ['obuclegkqayp', 5], ['kixrzfgmocsh', 6], ['obuclegkqayp', 5], ['dgukmlwebzoh']]
+Guesses: [['gdounvpisqkc', 4], ['ivulqocknsgd']]
+Mapping:  ['gdounvpisqkc', 'ivulqocknsgd', 'p', 'l']
 4
-Mapping:  ['dgukmlwebzoh', 'dklzobhufgwe', 'm', 'f']
-Lower result, char 'm' is in secret word and char 'f' is not in secret word
-Secret words chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g', 'w', 'l', 'w', 'm']
-Chars not in secret word:  ['e', 'd', 'v', 'p', 'u', 'k', 'k', 'l', 'w', 'l', 'f']
-Guess #16
+Mapping:  ['gdounvpisqkc', 'ivulqocknsgd', 'p', 'l']
+Result is same as last time, char 'p' and char 'l' may be both in secret word, or neither
+Secret words chars:  []
+Chars not in secret word:  []
+Possible chars:  ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+Undecided mapping:  [['p', 'l']]
 
 
-Final guess
+
+Guess #3
+chars =  {'l', 'p'}
+res =  ['ynaelopmixsk', 'nopatiemyskx', 'l', 't']
+Guesses: [['gdounvpisqkc', 4], ['ivulqocknsgd', 4], ['ynaelopmixsk']]
+Mapping:  ['ynaelopmixsk', 'nopatiemyskx', 'l', 't']
+5
+Secret words chars:  []
+Chars not in secret word:  []
+Possible chars:  ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+Undecided mapping:  [['p', 'l']]
+
+
+
+Guess #4
+Guesses: [['gdounvpisqkc', 4], ['ivulqocknsgd', 4], ['ynaelopmixsk', 5], ['nopatiemyskx']]
+Mapping:  ['ynaelopmixsk', 'nopatiemyskx', 'l', 't']
+6
+Mapping:  ['ynaelopmixsk', 'nopatiemyskx', 'l', 't']
+Greater result, char 't' is in secret word and char 'l' is not in secret word
+Undecided mappings 1:  {'l', 'p'}
+Undecided mappings 2:  {'t'}
+Char 'l' is not in secret word
+Char 'p' is not in secret word
+Char 't' is in secret word
+Secret words chars:  ['t']
+Chars not in secret word:  ['l', 'l', 'p']
+Possible chars:  ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z']
+Undecided mapping:  []
+
+
+
+Guess #5
+Guesses: [['gdounvpisqkc', 4], ['ivulqocknsgd', 4], ['ynaelopmixsk', 5], ['nopatiemyskx', 6], ['uodvcqfkxsze']]
+Mapping:  ['uodvcqfkxsze', 'zfdukgexcsqo', 'v', 'g']
+4
+Secret words chars:  ['t']
+Chars not in secret word:  ['l', 'l', 'p']
+Possible chars:  ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z']
+Undecided mapping:  []
+
+
+
+Guess #6
+Guesses: [['gdounvpisqkc', 4], ['ivulqocknsgd', 4], ['ynaelopmixsk', 5], ['nopatiemyskx', 6], ['uodvcqfkxsze', 4], ['zfdukgexcsqo']]
+Mapping:  ['uodvcqfkxsze', 'zfdukgexcsqo', 'v', 'g']
+4
+Mapping:  ['uodvcqfkxsze', 'zfdukgexcsqo', 'v', 'g']
+Result is same as last time, char 'v' and char 'g' may be both in secret word, or neither
+Secret words chars:  ['t']
+Chars not in secret word:  ['l', 'l', 'p']
+Possible chars:  ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z']
+Undecided mapping:  [['v', 'g']]
+
+
+
+Guess #7
+chars =  {'v', 'g'}
+res =  ['krzvctoxdnya', 'ocxgryztakdn', 'v', 'g']
+Guesses: [['gdounvpisqkc', 4], ['ivulqocknsgd', 4], ['ynaelopmixsk', 5], ['nopatiemyskx', 6], ['uodvcqfkxsze', 4], ['zfdukgexcsqo', 4], ['krzvctoxdnya']]
+Mapping:  ['krzvctoxdnya', 'ocxgryztakdn', 'v', 'g']
+7
+Secret words chars:  ['t']
+Chars not in secret word:  ['l', 'l', 'p']
+Possible chars:  ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z']
+Undecided mapping:  [['v', 'g']]
+
+
+
+Guess #8
+Guesses: [['gdounvpisqkc', 4], ['ivulqocknsgd', 4], ['ynaelopmixsk', 5], ['nopatiemyskx', 6], ['uodvcqfkxsze', 4], ['zfdukgexcsqo', 4], ['krzvctoxdnya', 7], ['ocxgryztakdn']]
+Mapping:  ['krzvctoxdnya', 'ocxgryztakdn', 'v', 'g']
+7
+Mapping:  ['krzvctoxdnya', 'ocxgryztakdn', 'v', 'g']
+Result is same as last time, char 'v' and char 'g' may be both in secret word, or neither
+Secret words chars:  ['t']
+Chars not in secret word:  ['l', 'l', 'p']
+Possible chars:  ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z']
+Undecided mapping:  [['v', 'g'], ['v', 'g']]
+
+
+
+Guess #9
+chars =  {'v', 'g'}
+res =  ['krzvctoxdnya', 'ocxgryztakdn', 'v', 'g']
+Guesses: [['gdounvpisqkc', 4], ['ivulqocknsgd', 4], ['ynaelopmixsk', 5], ['nopatiemyskx', 6], ['uodvcqfkxsze', 4], ['zfdukgexcsqo', 4], ['krzvctoxdnya', 7], ['ocxgryztakdn', 7], ['krzvctoxdnya']]
+Mapping:  ['krzvctoxdnya', 'ocxgryztakdn', 'v', 'g']
+7
+Secret words chars:  ['t']
+Chars not in secret word:  ['l', 'l', 'p']
+Possible chars:  ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z']
+Undecided mapping:  [['v', 'g'], ['v', 'g']]
+
+
+
+Guess #10
+Guesses: [['gdounvpisqkc', 4], ['ivulqocknsgd', 4], ['ynaelopmixsk', 5], ['nopatiemyskx', 6], ['uodvcqfkxsze', 4], ['zfdukgexcsqo', 4], ['krzvctoxdnya', 7], ['ocxgryztakdn', 7], ['krzvctoxdnya', 7], ['ocxgryztakdn']]
+Mapping:  ['krzvctoxdnya', 'ocxgryztakdn', 'v', 'g']
+7
+Mapping:  ['krzvctoxdnya', 'ocxgryztakdn', 'v', 'g']
+Result is same as last time, char 'v' and char 'g' may be both in secret word, or neither
+Secret words chars:  ['t']
+Chars not in secret word:  ['l', 'l', 'p']
+Possible chars:  ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z']
+Undecided mapping:  [['v', 'g'], ['v', 'g'], ['v', 'g']]
+
+
+
+Guess #11
+chars =  {'v', 'g'}
+res =  ['krzvctoxdnya', 'ocxgryztakdn', 'v', 'g']
+Guesses: [['gdounvpisqkc', 4], ['ivulqocknsgd', 4], ['ynaelopmixsk', 5], ['nopatiemyskx', 6], ['uodvcqfkxsze', 4], ['zfdukgexcsqo', 4], ['krzvctoxdnya', 7], ['ocxgryztakdn', 7], ['krzvctoxdnya', 7], ['ocxgryztakdn', 7], ['krzvctoxdnya']]
+Mapping:  ['krzvctoxdnya', 'ocxgryztakdn', 'v', 'g']
+7
+Secret words chars:  ['t']
+Chars not in secret word:  ['l', 'l', 'p']
+Possible chars:  ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z']
+Undecided mapping:  [['v', 'g'], ['v', 'g'], ['v', 'g']]
+
+
+
+Guess #12
+Guesses: [['gdounvpisqkc', 4], ['ivulqocknsgd', 4], ['ynaelopmixsk', 5], ['nopatiemyskx', 6], ['uodvcqfkxsze', 4], ['zfdukgexcsqo', 4], ['krzvctoxdnya', 7], ['ocxgryztakdn', 7], ['krzvctoxdnya', 7], ['ocxgryztakdn', 7], ['krzvctoxdnya', 7], ['ocxgryztakdn']]
+Mapping:  ['krzvctoxdnya', 'ocxgryztakdn', 'v', 'g']
+7
+Mapping:  ['krzvctoxdnya', 'ocxgryztakdn', 'v', 'g']
+Result is same as last time, char 'v' and char 'g' may be both in secret word, or neither
+Secret words chars:  ['t']
+Chars not in secret word:  ['l', 'l', 'p']
+Possible chars:  ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z']
+Undecided mapping:  [['v', 'g'], ['v', 'g'], ['v', 'g'], ['v', 'g']]
+
+
+
+Guess #13
+chars =  {'v', 'g'}
+res =  ['krzvctoxdnya', 'ocxgryztakdn', 'v', 'g']
+Guesses: [['gdounvpisqkc', 4], ['ivulqocknsgd', 4], ['ynaelopmixsk', 5], ['nopatiemyskx', 6], ['uodvcqfkxsze', 4], ['zfdukgexcsqo', 4], ['krzvctoxdnya', 7], ['ocxgryztakdn', 7], ['krzvctoxdnya', 7], ['ocxgryztakdn', 7], ['krzvctoxdnya', 7], ['ocxgryztakdn', 7], ['krzvctoxdnya']]
+Mapping:  ['krzvctoxdnya', 'ocxgryztakdn', 'v', 'g']
+7
+Secret words chars:  ['t']
+Chars not in secret word:  ['l', 'l', 'p']
+Possible chars:  ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z']
+Undecided mapping:  [['v', 'g'], ['v', 'g'], ['v', 'g'], ['v', 'g']]
+
+
+
+Guess #14
+Guesses: [['gdounvpisqkc', 4], ['ivulqocknsgd', 4], ['ynaelopmixsk', 5], ['nopatiemyskx', 6], ['uodvcqfkxsze', 4], ['zfdukgexcsqo', 4], ['krzvctoxdnya', 7], ['ocxgryztakdn', 7], ['krzvctoxdnya', 7], ['ocxgryztakdn', 7], ['krzvctoxdnya', 7], ['ocxgryztakdn', 7], ['krzvctoxdnya', 7], ['ocxgryztakdn']]
+Mapping:  ['krzvctoxdnya', 'ocxgryztakdn', 'v', 'g']
+7
+Mapping:  ['krzvctoxdnya', 'ocxgryztakdn', 'v', 'g']
+Result is same as last time, char 'v' and char 'g' may be both in secret word, or neither
+Secret words chars:  ['t']
+Chars not in secret word:  ['l', 'l', 'p']
+Possible chars:  ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z']
+Undecided mapping:  [['v', 'g'], ['v', 'g'], ['v', 'g'], ['v', 'g'], ['v', 'g']]
+
+
+
+Guess #15
+-----Final guess-----
 Words:  10000
-Word:  spugonlvmwxt  has all the secret chars
-Secret chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g', 'w', 'l', 'w', 'm']
-Word:  spugonlvmwxt  has unwanted char:  v
-Word:  cpnleghmavyw  has all the secret chars
-Secret chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g', 'w', 'l', 'w', 'm']
-Word:  cpnleghmavyw  has unwanted char:  e
-Word:  gntclvyzwpom  has all the secret chars
-Secret chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g', 'w', 'l', 'w', 'm']
-Word:  gntclvyzwpom  has unwanted char:  v
-Word:  fdpmwlgqvayn  has all the secret chars
-Secret chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g', 'w', 'l', 'w', 'm']
-Word:  fdpmwlgqvayn  has unwanted char:  d
-Word:  wmeyghlunvtp  has all the secret chars
-Secret chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g', 'w', 'l', 'w', 'm']
-Word:  wmeyghlunvtp  has unwanted char:  e
-Word:  wsmlnapfuvgi  has all the secret chars
-Secret chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g', 'w', 'l', 'w', 'm']
-Word:  wsmlnapfuvgi  has unwanted char:  v
-Word:  enlvurwqpmgi  has all the secret chars
-Secret chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g', 'w', 'l', 'w', 'm']
-Word:  enlvurwqpmgi  has unwanted char:  e
-Word:  wxbktdgplvmn  has all the secret chars
-Secret chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g', 'w', 'l', 'w', 'm']
-Word:  wxbktdgplvmn  has unwanted char:  d
-Word:  lxtmopnvegwq  has all the secret chars
-Secret chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g', 'w', 'l', 'w', 'm']
-Word:  lxtmopnvegwq  has unwanted char:  e
-Word:  swgrilujmnvp  has all the secret chars
-Secret chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g', 'w', 'l', 'w', 'm']
-Word:  swgrilujmnvp  has unwanted char:  v
-Word:  wigsnvlfpmuq  has all the secret chars
-Secret chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g', 'w', 'l', 'w', 'm']
-Word:  wigsnvlfpmuq  has unwanted char:  v
-Word:  nlwxvtpcqmfg  has all the secret chars
-Secret chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g', 'w', 'l', 'w', 'm']
-Word:  nlwxvtpcqmfg  has unwanted char:  v
-Word:  eqpwgzmljnsv  has all the secret chars
-Secret chars:  ['l', 'v', 'p', 'v', 'n', 'g', 'g', 'w', 'l', 'w', 'm']
-Word:  eqpwgzmljnsv  has unwanted char:  e
-Guesses: [['nvxcltdgszhb', 7], ['xhnsgbzcvdet', 6], ['esbmzrqjckwd', 6], ['kvzmbsqerwjc', 7], ['abmjzurpdqwl', 6], ['ajmbzluwrvdq', 7], ['klrbwaixpvfn', 7], ['fiwubrlaxkvp', 6], ['mfwcluzhknpr', 7], ['fhgrupnmwzcl', 8], ['pugckwobqaye', 5], ['obuclegkqayp', 5], ['kixrzfgmocsh', 6], ['obuclegkqayp', 5], ['dgukmlwebzoh', 4], ['dklzobhufgwe']]
-ValueError exception has occured
-Your tries are over. Good luck next time !
+Word:  krzvctoxdnya  has all the secret chars
+Secret chars:  {'t'}
+chars =  {'v', 'g'}
+res =  ['krzvctoxdnya', 'ocxgryztakdn', 'v', 'g']
+Guesses: [['gdounvpisqkc', 4], ['ivulqocknsgd', 4], ['ynaelopmixsk', 5], ['nopatiemyskx', 6], ['uodvcqfkxsze', 4], ['zfdukgexcsqo', 4], ['krzvctoxdnya', 7], ['ocxgryztakdn', 7], ['krzvctoxdnya', 7], ['ocxgryztakdn', 7], ['krzvctoxdnya', 7], ['ocxgryztakdn', 7], ['krzvctoxdnya', 7], ['ocxgryztakdn', 7], ['krzvctoxdnya']]
+Mapping:  ['krzvctoxdnya', 'ocxgryztakdn', 'v', 'g']
+7
+Secret words chars:  ['t']
+Chars not in secret word:  ['l', 'l', 'p']
+Possible chars:  ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z']
+Undecided mapping:  [['v', 'g'], ['v', 'g'], ['v', 'g'], ['v', 'g'], ['v', 'g']]
+
+
+
+Guess #16
+Stopped running, guess word is None.
+Game has ended
