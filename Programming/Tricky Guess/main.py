@@ -135,112 +135,117 @@ class GuessMachine:
 		self.secret_word_chars = [] #100% chars confirmed
 		self.unwanted_chars = [] #100% chars not in secret word
 		self.possible_chars = set(string_module.ascii_lowercase) 
+		self.undecided_chars = [] #Not sure what chars are
 
 		#self.char_trying = None
-		self.trying_map_chars = [None,None]
+		self.current_mapping = [None,None,None,None]
 	
 	def get_next_guess(self) -> str:
 		guess = None
 		guess_amount = len(self.guesses)
-		print("Guess #" + str(guess_amount))
+		print("Guess #" + str(guess_amount+1))
+
+		if guess_amount == 15:
+			print("\n\nFinal guess")
+			print("Words: ", len(self.guess_word_list))
+			for word in self.guess_word_list:
+				# Check word has all the chars we need
+				has_all_chars = True
+				for secret_char in self.secret_word_chars:
+					if secret_char not in word:
+						has_all_chars = False
+						break
+				if has_all_chars:
+					print("Word: ", word, " has all the secret chars")
+					print("Secret chars: ", self.secret_word_chars)
+
+					has_unwanted_char = False
+					for unwanted_char in self.unwanted_chars:
+						if unwanted_char in word:
+							has_unwanted_char = True
+							print("Word: ", word, " has unwanted char: ", unwanted_char)
+							break
+					
+					if has_unwanted_char:
+						continue
+					guess = word
+					break
+					
+
 
 		if guess_amount % 2 == 0:
-			self.trying_map_chars[0] = self.possible_chars.pop()
-			while True:
-				# We want to select a string which has 1 char diffirence
-				guess = random.choice(self.guess_word_list)
-				if self.trying_map_chars[0] not in guess:
-					continue
-				string, src_char, dst_char = find_simillar_string_1_char_diff(guess, self.guess_word_list)
-				if string and self.trying_map_chars[0] not in string:
+			for c in self.possible_chars:
+				mapping =  random.choice(self.mappings)
+				src_char = mapping[2]
+				dst_char = mapping[3]
+
+				if c == src_char or c == dst_char:
+					# Skip same mapping already tried
+					if src_char in self.undecided_chars and dst_char in self.undecided_chars:
+						continue
+					if src_char in self.unwanted_chars or dst_char in self.unwanted_chars:
+						print("src_char or dst_char in unwanted_chars: ", src_char, dst_char, self.unwanted_chars)
+						continue
+					self.current_mapping = mapping
+					print("Mapping: ", self.current_mapping)
 					break
-				# else, keep guessing a word untill found
+			guess = mapping[0]
 
 		else:
-			for c in self.possible_chars:
-				string, src_char, dst_char = find_simillar_string_1_char_diff(self.guesses[0][0], self.guess_word_list)
-				if c == dst_char:
-					print(self.guesses[0][0], string, src_char, dst_char)
-					try:
-						self.trying_map_chars[0] = src_char
-						self.trying_map_chars[1] = dst_char
-						self.possible_chars.remove(src_char)
-						self.possible_chars.remove(dst_char)
-						guess = string
-					except:
-						pass
-					break
-			"""
-			self.char_trying = self.possible_chars.pop()
-			for x in self.guesses:
-				word = x[0]
-				if self.char_trying in word:
-					#THE PROBLEM HERE IS THAT SRC_CHAR IS NOT EQUAL TO SELF.CHAR_TRYING. WE NEED TO FIX THIS ASAP
-					simillar_string, src_char, dst_char = find_simillar_string_1_char_diff(word, self.guess_word_list)
-					if simillar_string:
-						guess = simillar_string
-						self.trying_map_chars[0] = src_char
-						self.trying_map_chars[1] = dst_char
-						print("Mapping: '" + src_char + "' -> '" + dst_char +"'")
-						break
-		"""
+			guess = self.current_mapping[1]
 		self.guesses.append([guess])
-		try:
-			self.guess_word_list.remove(guess) # No need to guess that word again.
-		except:
-			pass
 
 		print("Guesses: " + str(self.guesses))
 		return guess
 	
-	def __remove_words_containing_char(self, char: str):
-		words_to_remove = []
-		for x in self.guess_word_list:
-			if char in x:
-				words_to_remove.append(x)
-		for x in words_to_remove:
-			self.guess_word_list.remove(x)
-		print("Removed " + str(len(words_to_remove)) + " words containing '" + char + "', left: " + str(len(self.guess_word_list)) + "/10000")
-	
-	def __remove_words_not_containing_char(self, char: str):
-		words_to_remove = []
-		for x in self.guess_word_list:
-			if char not in x:
-				words_to_remove.append(x)
-		for x in words_to_remove:
-			self.guess_word_list.remove(x)
-		print("Removed " + str(len(words_to_remove)) + " words NOT containing '" + char + "', left: " + str(len(self.guess_word_list)) + "/10000")
-
 	def set_last_result(self, result: int):
 		"""
 		Upon receiving number of characters correct from the server, this function gets called.
 		"""
-		src_char = self.trying_map_chars[0]
-		dst_char = self.trying_map_chars[1]
+		src_char = self.current_mapping[2]
+		dst_char = self.current_mapping[3]
+
 		if len(self.guesses) > 1:
-			print("Mapping: '{}' -> '{}'".format(src_char, dst_char))
+			print("Mapping: ", self.current_mapping)
 			if result > self.last_result:
 				print("Greater result, char '" + dst_char + "' is in secret word and char '" + src_char + "' is not in secret word")
-				self.__remove_words_not_containing_char(dst_char)
 				self.secret_word_chars.append(dst_char)
-
-				self.__remove_words_containing_char(src_char)
 				self.unwanted_chars.append(src_char)
+
+				try:
+					self.undecided_chars.remove(src_char)
+				except:
+					pass
+
+				try:
+					self.undecided_chars.remove(dst_char)
+				except:
+					pass
+				
 			elif result == self.last_result:
-				print("Result is same as last time")
+				print("Result is same as last time, char '" + src_char + "' and char '" + dst_char + "' may be both in secret word, or neither")
+				self.undecided_chars.append(src_char)
+				self.undecided_chars.append(dst_char)
 				pass
 			else:
 				print("Lower result, char '" + src_char + "' is in secret word and char '" + dst_char + "' is not in secret word")
-				self.__remove_words_not_containing_char(src_char)
 				self.secret_word_chars.append(src_char)
-
-				self.__remove_words_containing_char(dst_char)
 				self.unwanted_chars.append(dst_char)
+
+				try:
+					self.undecided_chars.remove(src_char)
+				except:
+					pass
+
+				try:
+					self.undecided_chars.remove(dst_char)
+				except:
+					pass
 		self.last_result = result
 		self.guesses[-1].append(result)
 
-		print("Secret words chars: " + str(self.secret_word_chars))
-		print("Chars not in secret word: " + str(self.unwanted_chars))
+		print("Secret words chars: ", self.secret_word_chars)
+		print("Chars not in secret word: ", self.unwanted_chars)
 
 
 
@@ -280,7 +285,7 @@ class Client:
 					self.guess_machine.set_last_result(result)
 				except ValueError:
 					# Read last line
-					print("ValueError exception has occured")
+					print("ValueError exception has occured !!!")
 					print(line)
 					return
 
@@ -297,13 +302,14 @@ for x in mappings:
 
 
 
-
+"""
 words1 = [x[0] for x in mappings]
 words2 = [x[1] for x in mappings]
 
 words = list((set(list(words1) + list(words2))))
+"""
 
-#words = read_words()
+words = read_words()
 
 guessMachine = GuessMachine(words, mappings)
 client = Client(guessMachine)
